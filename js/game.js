@@ -43,6 +43,11 @@ var game = {
         // add our player entity in the entity pool
         me.pool.register("player", game.PlayerEntity);
 
+        // enable the keyboard
+        me.input.bindKey(me.input.KEY.LEFT, 'left');
+        me.input.bindKey(me.input.KEY.RIGHT, 'right');
+        me.input.bindKey(me.input.KEY.UP, 'up', true);
+
         // Start the game.
         me.state.change(me.state.PLAY);
     }
