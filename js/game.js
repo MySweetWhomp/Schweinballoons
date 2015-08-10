@@ -12,7 +12,7 @@ var game = {
     // Run on page load.
     "onload" : function () {
         // Initialize the video.
-        if (!me.video.init(960, 640, {wrapper : "screen", scale : "auto"})) {
+        if (!me.video.init(160, 144, { wrapper : "screen", scale : 3 })) {
             alert("Your browser does not support HTML5 canvas.");
             return;
         }
