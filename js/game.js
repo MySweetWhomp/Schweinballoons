@@ -48,6 +48,8 @@ var game = {
         me.input.bindKey(me.input.KEY.RIGHT, 'right');
         me.input.bindKey(me.input.KEY.UP, 'up', true);
 
+        me.sys.gravity = 0.7;
+
         // Start the game.
         me.state.change(me.state.PLAY);
     }

@@ -13,10 +13,14 @@ game.PlayerEntity = me.Entity.extend({
         // viewport must follow the player
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
-        this.body.setVelocity(3, 9);
+        this.body.setVelocity(2, 9);
 
         // we always update the player, ALWAYS
         this.alwaysUpdate = true;
+
+        this.onAirTime = 100;
+
+        this.JUMP_MAX_AIRBONRNE_TIME = 30;
     },
 
     /**
@@ -34,10 +38,17 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         if (me.input.isKeyPressed('up')) {
-            if (!this.body.jumping && !this.body.falling) {
+            if (!this.body.jumping &&
+                (!this.body.falling ||
+                 this.onAirTime < this.JUMP_MAX_AIRBONRNE_TIME)) {
                 this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
                 this.body.jumping = true;
             }
+        }
+
+        this.onAirTime += dt;
+        if (!this.body.falling) {
+            this.onAirTime = 0;
         }
 
         // apply physics to the body (this moves the entity)
