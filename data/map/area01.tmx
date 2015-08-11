@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" nextobjectid="14">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="16" tileheight="16" nextobjectid="15">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16">
   <image source="../img/tileset.png" width="64" height="32"/>
  </tileset>
@@ -23,6 +23,13 @@
     <property name="frameheight" value="34"/>
     <property name="framewidth" value="34"/>
     <property name="image" value="pig"/>
+   </properties>
+  </object>
+  <object id="14" name="ball" x="224" y="80" width="16" height="16">
+   <properties>
+    <property name="frameheight" value="16"/>
+    <property name="framewidth" value="16"/>
+    <property name="image" value="ball"/>
    </properties>
   </object>
  </objectgroup>

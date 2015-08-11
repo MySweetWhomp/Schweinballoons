@@ -3,9 +3,7 @@
 var game = {
 
     // an object where to store game information
-    data : {
-    },
-
+    data : { },
 
     // Run on page load.
     onload : function () {
@@ -36,6 +34,7 @@ var game = {
 
         // add our player entity in the entity pool
         me.pool.register('player', game.PlayerEntity);
+        me.pool.register('ball', game.BallEntity);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, 'left');

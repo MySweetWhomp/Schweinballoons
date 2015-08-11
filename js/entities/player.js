@@ -15,6 +15,8 @@ game.PlayerEntity = me.Entity.extend({
 
         this.body.setVelocity(2, 9);
 
+        this.name = 'player';
+
         // we always update the player, ALWAYS
         this.alwaysUpdate = true;
 
@@ -66,6 +68,9 @@ game.PlayerEntity = me.Entity.extend({
      * (called when colliding with other objects)
      */
     onCollision : function (response, other) {
+        if (other.name === 'ball') {
+            return false;
+        }
         // Make all other objects solid
         return true;
     }
