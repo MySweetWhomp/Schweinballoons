@@ -15,9 +15,12 @@ game.BallEntity = me.Entity.extend({
 
         this.name = 'ball';
 
+        // we always update the ball, ALWAYS
+        this.alwaysUpdate = true;
+
         this.direction = new me.Vector2d(0, 1);
-        this.lastDirectionChange = 100;
-        this.BEFORE_DIRECTION_CHANGE_TIME = 100;
+        this.lastDirectionChange = 50;
+        this.BEFORE_DIRECTION_CHANGE_TIME = 50;
     },
 
     update: function(dt) {
@@ -86,7 +89,8 @@ game.BallEntity = me.Entity.extend({
         if (other.name !== 'player') {
             this.bounceDirection();
         } else {
-            if (Math.abs(response.overlapV.x) > Math.abs(response.overlapV.y)) {
+            if ((Math.abs(response.overlapV.x) > Math.abs(response.overlapV.y)) &&
+                 other.body.vel.x !== 0) {
                 if (response.overlapV.x < 0) {
                     this.goLeft();
                 } else {
