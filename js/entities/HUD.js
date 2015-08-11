@@ -21,6 +21,6 @@ game.HUD.Container = me.Container.extend({
         this.z = Infinity;
 
         // give a name
-        this.name = "HUD";
+        this.name = 'HUD';
     }
 });

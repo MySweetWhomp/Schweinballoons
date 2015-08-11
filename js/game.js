@@ -8,15 +8,15 @@ var game = {
 
 
     // Run on page load.
-    "onload" : function () {
+    onload : function () {
         // Initialize the video.
-        if (!me.video.init(160, 144, { wrapper : "screen", scale : 3 })) {
-            alert("Your browser does not support HTML5 canvas.");
+        if (!me.video.init(160, 144, { wrapper : 'screen', scale : 3 })) {
+            alert('Your browser does not support HTML5 canvas.');
             return;
         }
 
         // Initialize the audio.
-        me.audio.init("mp3,ogg");
+        me.audio.init('mp3,ogg');
 
         // Set a callback to run when loading is complete.
         me.loader.onload = this.loaded.bind(this);
@@ -29,12 +29,12 @@ var game = {
     },
 
     // Run on game resources loaded.
-    "loaded" : function () {
+    loaded : function () {
         me.state.set(me.state.MENU, new game.TitleScreen());
         me.state.set(me.state.PLAY, new game.PlayScreen());
 
         // add our player entity in the entity pool
-        me.pool.register("player", game.PlayerEntity);
+        me.pool.register('player', game.PlayerEntity);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, 'left');
