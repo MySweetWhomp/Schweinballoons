@@ -10,7 +10,7 @@ game.BallEntity = me.Entity.extend({
         // call the constructor
         this._super(me.Entity, 'init', [x, y , settings]);
 
-        this.body.setVelocity(2, 2);
+        this.body.setVelocity(3, 3);
         this.body.gravity = 0;
 
         this.name = 'ball';
@@ -90,7 +90,7 @@ game.BallEntity = me.Entity.extend({
             this.bounceDirection();
         } else {
             if ((Math.abs(response.overlapV.x) > Math.abs(response.overlapV.y)) &&
-                 other.body.vel.x !== 0) {
+                (other.body.vel.x !== 0 || other.onAirTime === 0)) {
                 if (response.overlapV.x < 0) {
                     this.goLeft();
                 } else {
