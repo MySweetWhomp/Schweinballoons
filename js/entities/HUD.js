@@ -39,15 +39,15 @@ game.HUD.Container = me.Container.extend({
         --this.piglets;
 
         // if enough piglets
-        if(this.piglets >= 0){
+        if (this.piglets >= 0){
           // remove a piglet from the screen
           // TODO : check needed value for 'keepAlive' parameter
-          //(depends if init is called again when we init the game again)
+          // (depends if init is called again when we init the game again)
           this.removeChild(this.getChildAt(this.piglets), false);
         }
 
         // if no more piglets
-        if(this.piglets <= 0){
+        if (this.piglets <= 0){
           // A WINNER IS YOU
           // TODO : winning screen
           console.log("win");

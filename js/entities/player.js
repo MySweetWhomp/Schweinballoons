@@ -105,6 +105,7 @@ game.PlayerEntity = me.Entity.extend({
      */
     onCollision : function (response, other) {
         if (other.name === 'ball') {
+            // TODO if jumping ON the ball, must actually `return true` to have a collision
             return false;
         }
         // Make all other objects solid
