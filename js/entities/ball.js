@@ -22,7 +22,7 @@ game.BallEntity = me.Entity.extend({
         this.lastDirectionChange = 50;
         this.BEFORE_DIRECTION_CHANGE_TIME = 50;
     },
-    
+
     /**
      * update the entity
      */

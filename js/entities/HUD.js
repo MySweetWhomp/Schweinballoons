@@ -25,7 +25,7 @@ game.HUD.Container = me.Container.extend({
         // add all piglets
         this.maxPiglets = 4;
         this.piglets = this.maxPiglets;
-        for (var i = this.maxPiglets - 1; i >= 0; i--) {
+        for (var i = this.maxPiglets - 1; i >= 0; --i) {
           this.addChild(new game.HUD.PigletItem(1 + ((16 + 1) * i) , 1));
         }
     },
@@ -36,8 +36,7 @@ game.HUD.Container = me.Container.extend({
      */
     pigletRescued: function() {
         // remove a piglet
-        this.piglets--;
-        console.log(this.piglets);
+        --this.piglets;
 
         // if enough piglets
         if(this.piglets >= 0){
