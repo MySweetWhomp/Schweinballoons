@@ -127,19 +127,28 @@ game.BallEntity = me.Entity.extend({
             // set acceleration speed if kicking
             var speed = other.kicking ? this.powerUp() : this.powerDown();
 
-            // bounce around player
-            if ((Math.abs(response.overlapV.x) > Math.abs(response.overlapV.y)) &&
-                (other.body.vel.x !== 0 || other.onAirTime === 0)) {
-                if (response.overlapV.x < 0) {
-                    this.goLeft();
-                } else {
+            if (response.indexShapeB > 0) {
+                // if we're hit by the second shape, then we're going horizontal
+                if (other.direction.x >= 0) {
                     this.goRight();
+                } else {
+                    this.goLeft();
                 }
             } else {
-                if (response.overlapV.y > 0) {
-                    this.goDown();
+                // bounce around player
+                if ((Math.abs(response.overlapV.x) > Math.abs(response.overlapV.y)) &&
+                    (other.body.vel.x !== 0 || other.onAirTime === 0)) {
+                    if (response.overlapV.x < 0) {
+                        this.goLeft();
+                    } else {
+                        this.goRight();
+                    }
                 } else {
-                    this.goUp();
+                    if (response.overlapV.y > 0) {
+                        this.goDown();
+                    } else {
+                        this.goUp();
+                    }
                 }
             }
         }
