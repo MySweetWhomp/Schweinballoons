@@ -41,6 +41,11 @@ game.PlayerEntity = me.Entity.extend({
             this.body.vel.x = 0;
         }
 
+        //TODO : remove, just for debug purposes
+        if (me.input.isKeyPressed('e')) {
+          me.game.world.getChildByName("HUD")[0].pigletRescued();
+        }
+
         //handling jump
         if (me.input.isKeyPressed('up')) {
             if (!this.body.jumping &&
