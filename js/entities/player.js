@@ -57,7 +57,7 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         this.onAirTime += dt;
-        if (!this.body.falling) {
+        if (!this.body.falling && !this.body.jumping) {
             this.onAirTime = 0;
         }
 
