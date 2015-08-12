@@ -20,8 +20,8 @@
  <objectgroup name="player">
   <object id="13" name="player" x="192" y="112" width="16" height="32">
    <properties>
-    <property name="frameheight" value="34"/>
-    <property name="framewidth" value="34"/>
+    <property name="frameheight" value="40"/>
+    <property name="framewidth" value="40"/>
     <property name="image" value="pig"/>
    </properties>
   </object>

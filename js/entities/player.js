@@ -23,6 +23,19 @@ game.PlayerEntity = me.Entity.extend({
         // setting constants related to jumping
         this.onAirTime = 100;
         this.JUMP_MAX_AIRBONRNE_TIME = 80;
+
+        // animations
+        this.renderable.addAnimation('idle', [0, 1, 2], 150);
+        this.renderable.addAnimation('walk', [3, 4, 5, 6, 7, 8], 100);
+        this.renderable.addAnimation('jump', [15, 16], 50);
+        this.renderable.addAnimation('fall', [18, 19], 50);
+        this.setCurrentAnimation('idle');
+    },
+
+    setCurrentAnimation: function(name, onComplete) {
+        if (!this.renderable.isCurrentAnimation(name)) {
+            this.renderable.setCurrentAnimation(name, onComplete);
+        }
     },
 
     /**
@@ -66,6 +79,17 @@ game.PlayerEntity = me.Entity.extend({
 
         // handle collisions against other shapes
         me.collision.check(this);
+
+        // update animation
+        if (this.body.jumping) {
+            this.setCurrentAnimation('jump');
+        } else if (this.body.falling) {
+            this.setCurrentAnimation('fall');
+        } else if (this.body.vel.x !== 0) {
+            this.setCurrentAnimation('walk');
+        } else {
+            this.setCurrentAnimation('idle');
+        }
 
         // return true if we moved or if the renderable was updated
         return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
