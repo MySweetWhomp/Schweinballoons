@@ -91,7 +91,7 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         //handling jump
-        if (me.input.isKeyPressed('up')) {
+        if (me.input.isKeyPressed('jump')) {
             if (!this.body.jumping &&
                 (!this.body.falling ||
                  this.onAirTime < this.JUMP_MAX_AIRBONRNE_TIME)) {
