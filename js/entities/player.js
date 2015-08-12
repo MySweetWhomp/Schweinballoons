@@ -64,7 +64,7 @@ game.PlayerEntity = me.Entity.extend({
       * kicks something
       */
      kick: function(){
-        this.setCurrentAnimation('kick', (function () { this.kicking = false; }).bind(this));
+        this.setCurrentAnimation('kick', (function () { this.kicking = false; return true; }).bind(this));
         this.kicking = true;
      },
 
@@ -112,9 +112,7 @@ game.PlayerEntity = me.Entity.extend({
 
         // enable kicking
         if(me.input.isKeyPressed('kick')) {
-          if(!this.kicking) {
-              this.kick();
-          }
+            this.kick();
         }
 
         // update animation
