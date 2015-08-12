@@ -38,7 +38,7 @@ game.PlayerEntity = me.Entity.extend({
         this.renderable.addAnimation('run', [9, 10, 11, 12, 13, 14], 70);
         this.renderable.addAnimation('jump', [15, 16], 50);
         this.renderable.addAnimation('fall', [18, 19], 50);
-        this.renderable.addAnimation('kick', [20, 21, 21, 21, 22], 50);
+        this.renderable.addAnimation('kick', [20, 21, 21, 21], 50);
         this.renderable.addAnimation('stun', [23, 24, 23, 24, 23, 24], 50); // Must blink
         this.renderable.addAnimation('win', [25, 26, 27, 26], 120);
         this.setCurrentAnimation('idle');
@@ -62,14 +62,6 @@ game.PlayerEntity = me.Entity.extend({
 
         // set state as currently knockbacked
         this.knockbacked = true;
-     },
-
-     /**
-      * kicks something
-      */
-     kick: function(){
-        this.setCurrentAnimation('kick', (function () { this.kicking = false; return true; }).bind(this));
-        this.kicking = true;
      },
 
     /**
@@ -116,20 +108,24 @@ game.PlayerEntity = me.Entity.extend({
 
         // enable kicking
         if(me.input.isKeyPressed('kick')) {
-            this.kick();
+            this.kicking = true;
         }
 
         // update animation
         if(!this.kicking){
-          if (this.body.jumping) {
-              this.setCurrentAnimation('jump');
-          } else if (this.body.falling) {
-              this.setCurrentAnimation('fall');
-          } else if (this.body.vel.x !== 0) {
-              this.setCurrentAnimation('walk');
-          } else {
-              this.setCurrentAnimation('idle');
-          }
+            if (this.body.jumping) {
+                this.setCurrentAnimation('jump');
+            } else if (this.body.falling) {
+                this.setCurrentAnimation('fall');
+            } else if (this.body.vel.x !== 0) {
+                this.setCurrentAnimation('walk');
+            } else {
+                this.setCurrentAnimation('idle');
+            }
+        } else {
+            this.setCurrentAnimation('kick', (function() {
+                this.kicking = false;
+            }).bind(this));
         }
 
         // return true if we moved or if the renderable was updated
