@@ -13,7 +13,6 @@ game.PlayerEntity = me.Entity.extend({
 
         // shift sprite so that collision box is its bottom
         this.renderable.translate(0, -4);
-        this.renderable.updateBounds();
 
         // viewport must follow the player
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
@@ -62,7 +61,22 @@ game.PlayerEntity = me.Entity.extend({
 
         // set state as currently knockbacked
         this.knockbacked = true;
-     },
+    },
+
+    /**
+     * kick
+     */
+    kick: function() {
+        if (!this.kicking) {
+            this.kicking = true;
+            this.body.addShape(new me.Rect(
+                this.direction.x < 0 ? -20 : 20,
+                15,
+                17,
+                7
+            ));
+        }
+    },
 
     /**
      * update the entity
@@ -83,7 +97,7 @@ game.PlayerEntity = me.Entity.extend({
 
         //TODO : remove, just for debug purposes
         if (me.input.isKeyPressed('debug')) {
-          this.knockback();
+            this.knockback();
         }
 
         //handling jump
@@ -108,7 +122,7 @@ game.PlayerEntity = me.Entity.extend({
 
         // enable kicking
         if(me.input.isKeyPressed('kick')) {
-            this.kicking = true;
+            this.kick();
         }
 
         // update animation
@@ -125,6 +139,7 @@ game.PlayerEntity = me.Entity.extend({
         } else {
             this.setCurrentAnimation('kick', (function() {
                 this.kicking = false;
+                this.body.removeShapeAt(1);
             }).bind(this));
         }
 
@@ -143,6 +158,8 @@ game.PlayerEntity = me.Entity.extend({
 
         if (other.name === 'ball') {
             // TODO if jumping ON the ball, must actually `return true` to have a collision
+            return false;
+        } else if (response.indexShapeA > 0) {
             return false;
         }
         // Make all other objects solid
