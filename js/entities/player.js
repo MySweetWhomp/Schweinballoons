@@ -9,26 +9,28 @@ game.PlayerEntity = me.Entity.extend({
     init:function (x, y, settings) {
         // call the constructor
         this._super(me.Entity, 'init', [x, y , settings]);
+        this.name = 'player';
 
         // viewport must follow the player
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
+        // we set the velocity of the player's body
         this.body.setVelocity(2, 9);
-
-        this.name = 'player';
 
         // we always update the player, ALWAYS
         this.alwaysUpdate = true;
 
+        // setting constants related to jumping
         this.onAirTime = 100;
-
-        this.JUMP_MAX_AIRBONRNE_TIME = 30;
+        this.JUMP_MAX_AIRBONRNE_TIME = 80;
     },
 
     /**
      * update the entity
      */
     update : function (dt) {
+
+        // handling movement on the side
         if (me.input.isKeyPressed('left')) {
             this.renderable.flipX(true);
             this.body.vel.x -= this.body.accel.x * me.timer.tick;
@@ -39,6 +41,7 @@ game.PlayerEntity = me.Entity.extend({
             this.body.vel.x = 0;
         }
 
+        //handling jump
         if (me.input.isKeyPressed('up')) {
             if (!this.body.jumping &&
                 (!this.body.falling ||

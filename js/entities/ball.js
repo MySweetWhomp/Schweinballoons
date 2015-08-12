@@ -1,6 +1,5 @@
-
 /**
- * Player Entity
+ * Ball Entity
  */
 game.BallEntity = me.Entity.extend({
     /**
@@ -9,23 +8,26 @@ game.BallEntity = me.Entity.extend({
     init: function (x, y, settings) {
         // call the constructor
         this._super(me.Entity, 'init', [x, y , settings]);
+        this.name = 'ball';
 
+        // the ball must not react to gravity
         this.body.setVelocity(3, 3);
         this.body.gravity = 0;
-
-        this.name = 'ball';
 
         // we always update the ball, ALWAYS
         this.alwaysUpdate = true;
 
+        // set ball direction
         this.direction = new me.Vector2d(0, 1);
         this.lastDirectionChange = 50;
         this.BEFORE_DIRECTION_CHANGE_TIME = 50;
     },
-
+    
+    /**
+     * update the entity
+     */
     update: function(dt) {
         if (this.direction.x !== 0 && this.direction.y !== 0) {
-            console.debug('here');
             this.direction.y = 0;
         }
 
