@@ -86,7 +86,7 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         //TODO : remove, just for debug purposes
-        if (me.input.isKeyPressed('e')) {
+        if (me.input.isKeyPressed('debug')) {
           this.knockback();
         }
 
@@ -111,7 +111,7 @@ game.PlayerEntity = me.Entity.extend({
         me.collision.check(this);
 
         // enable kicking
-        if(me.input.isKeyPressed('a')) {
+        if(me.input.isKeyPressed('kick')) {
           if(!this.kicking) {
               this.kick();
           }
