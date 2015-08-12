@@ -40,10 +40,13 @@ var game = {
         me.input.bindKey(me.input.KEY.LEFT, 'left');
         me.input.bindKey(me.input.KEY.RIGHT, 'right');
         me.input.bindKey(me.input.KEY.UP, 'up', true);
+        // added for debug purposes
+        me.input.bindKey(me.input.KEY.E, 'e', true);
 
+        // sets global gravity
         me.sys.gravity = 0.7;
 
-        // Start the game.
+        // starts the game.
         me.state.change(me.state.PLAY);
     }
 };
