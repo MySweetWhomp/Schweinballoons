@@ -40,6 +40,7 @@ var game = {
         me.input.bindKey(me.input.KEY.LEFT, 'left');
         me.input.bindKey(me.input.KEY.RIGHT, 'right');
         me.input.bindKey(me.input.KEY.UP, 'up', true);
+        me.input.bindKey(me.input.KEY.A, 'a', true);
         // added for debug purposes
         me.input.bindKey(me.input.KEY.E, 'e', true);
 

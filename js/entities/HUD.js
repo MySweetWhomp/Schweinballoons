@@ -41,8 +41,6 @@ game.HUD.Container = me.Container.extend({
         // if enough piglets
         if (this.piglets >= 0){
           // remove a piglet from the screen
-          // TODO : check needed value for 'keepAlive' parameter
-          // (depends if init is called again when we init the game again)
           this.removeChild(this.getChildAt(this.piglets), false);
         }
 
