@@ -27,8 +27,12 @@ game.PlayerEntity = me.Entity.extend({
         // animations
         this.renderable.addAnimation('idle', [0, 1, 2], 150);
         this.renderable.addAnimation('walk', [3, 4, 5, 6, 7, 8], 100);
+        this.renderable.addAnimation('run', [9, 10, 11, 12, 13, 14], 70);
         this.renderable.addAnimation('jump', [15, 16], 50);
         this.renderable.addAnimation('fall', [18, 19], 50);
+        this.renderable.addAnimation('kick', [20, 21, 21, 21, 22], 50);
+        this.renderable.addAnimation('stun', [23, 24, 23, 24, 23, 24], 50); // Must blink
+        this.renderable.addAnimation('win', [25, 26, 27, 26], 120);
         this.setCurrentAnimation('idle');
     },
 
