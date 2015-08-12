@@ -11,6 +11,10 @@ game.PlayerEntity = me.Entity.extend({
         this._super(me.Entity, 'init', [x, y , settings]);
         this.name = 'player';
 
+        // shift sprite so that collision box is its bottom
+        this.renderable.translate(0, -4);
+        this.renderable.updateBounds();
+
         // viewport must follow the player
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
