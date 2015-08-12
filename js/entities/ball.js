@@ -44,7 +44,7 @@ game.BallEntity = me.Entity.extend({
      */
     powerDown: function() {
         this.powerLevel = this.powerLevel > 0 ? this.powerLevel - 1 : 0;
-        this.poweredUp = this.powerLevel != 0;
+        this.poweredUp = this.powerLevel !== 0;
 
         var step = (this.ACCELERATED_SPEED - this.NORMAL_SPEED) / this.DECCELERATION_STEPS;
         var speed = this.NORMAL_SPEED + this.powerLevel * step;
