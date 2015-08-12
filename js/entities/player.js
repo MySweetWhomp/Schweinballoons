@@ -158,14 +158,15 @@ game.PlayerEntity = me.Entity.extend({
      * (called when colliding with other objects)
      */
     onCollision : function (response, other) {
-
+        var myShapeIndex = response.a.name === this.name ? response.indexShapeA
+                                                         : response.indexShapeB;
         //we're not knockbacked anymore
         this.knockbacked = false;
 
         if (other.name === 'ball') {
             // TODO if jumping ON the ball, must actually `return true` to have a collision
             return false;
-        } else if (response.indexShapeA > 0) {
+        } else if (myShapeIndex > 0) {
             return false;
         }
         // Make all other objects solid
