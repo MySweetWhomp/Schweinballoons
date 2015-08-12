@@ -34,9 +34,9 @@ game.BallEntity = me.Entity.extend({
      * accelerates the ball
      */
     powerUp: function() {
-      this.poweredUp = true;
-      this.powerLevel = this.DECCELERATION_STEPS;
-      this.body.setVelocity(this.ACCELERATED_SPEED, this.ACCELERATED_SPEED);
+        this.poweredUp = true;
+        this.powerLevel = this.DECCELERATION_STEPS;
+        this.body.setVelocity(this.ACCELERATED_SPEED, this.ACCELERATED_SPEED);
     },
 
     /**

@@ -34,7 +34,7 @@ game.PlayerEntity = me.Entity.extend({
         this.renderable.addAnimation('run', [9, 10, 11, 12, 13, 14], 70);
         this.renderable.addAnimation('jump', [15, 16], 50);
         this.renderable.addAnimation('fall', [18, 19], 50);
-        this.renderable.addAnimation('kick', [20, 21, 21, 21, 22, 22], 50);
+        this.renderable.addAnimation('kick', [20, 21, 21, 21, 22], 50);
         this.renderable.addAnimation('stun', [23, 24, 23, 24, 23, 24], 50); // Must blink
         this.renderable.addAnimation('win', [25, 26, 27, 26], 120);
         this.setCurrentAnimation('idle');
@@ -50,22 +50,22 @@ game.PlayerEntity = me.Entity.extend({
      * knocks the player back
      */
      knockback: function (strength) {
-       // set default strength
-       strength = strength || 4;
+         // set default strength
+         strength = strength || 4;
 
-       // change the velocity
-       this.body.vel.add(new me.Vector2d(-strength * this.direction.x, -strength));
+        // change the velocity
+        this.body.vel.add(new me.Vector2d(-strength * this.direction.x, -strength));
 
-       // set state as currently knockbacked
-       this.knockbacked = true;
+        // set state as currently knockbacked
+        this.knockbacked = true;
      },
 
      /**
       * kicks something
       */
      kick: function(){
-       this.setCurrentAnimation('kick');
-       this.kicking = true;
+        this.setCurrentAnimation('kick', (function () { this.kicking = false; }).bind(this));
+        this.kicking = true;
      },
 
     /**
@@ -115,13 +115,6 @@ game.PlayerEntity = me.Entity.extend({
           if(!this.kicking) {
               this.kick();
           }
-        }
-        if(this.kicking &&
-           this.renderable.isCurrentAnimation('kick') &&
-           this.renderable.getCurrentAnimationFrame() == 5)
-        {
-          this.renderable.setAnimationFrame(0);
-          this.kicking = false;
         }
 
         // update animation
