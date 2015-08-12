@@ -49,6 +49,12 @@ game.PlayerEntity = me.Entity.extend({
         }
     },
 
+    flipX: function(flipX) {
+        if (!this.kicking) {
+            this.renderable.flipX(flipX);
+        }
+    },
+
     /**
      * knocks the player back
      */
@@ -84,11 +90,11 @@ game.PlayerEntity = me.Entity.extend({
     update : function (dt) {
         // handling movement on the side
         if (me.input.isKeyPressed('left')) {
-            this.renderable.flipX(true);
+            this.flipX(true);
             this.body.vel.x -= this.body.accel.x * me.timer.tick * (this.knockbacked ? 0.0 : 1);
             this.direction = new me.Vector2d(-1, 0);
         } else if (me.input.isKeyPressed('right')) {
-            this.renderable.flipX(false);
+            this.flipX(false);
             this.body.vel.x += this.body.accel.x * me.timer.tick * (this.knockbacked ? 0.0 : 1);
             this.direction = new me.Vector2d(1, 0);
         } else if(!this.knockbacked) {
