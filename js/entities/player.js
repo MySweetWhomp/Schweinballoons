@@ -61,15 +61,15 @@ game.PlayerEntity = me.Entity.extend({
      * knocks the player back
      */
      knockback: function (strength, direction) {
+         // set state as currently knockbacked
+         this.knockbacked = true;
+
          // set default strength
          strength = strength || 2;
          direction = direction || this.direction;
 
         // change the velocity
         this.body.vel.add(new me.Vector2d(-strength * 10 * direction.x, -strength));
-
-        // set state as currently knockbacked
-        this.knockbacked = true;
     },
 
     /**
@@ -102,26 +102,21 @@ game.PlayerEntity = me.Entity.extend({
         if(!this.knockbacked) {
             if (me.input.isKeyPressed('left')) {
                 this.flipX(true);
-                this.body.vel.x -= this.body.accel.x * me.timer.tick * (this.knockbacked ? 0.0 : 1);
+                this.body.vel.x -= this.body.accel.x * me.timer.tick;
                 this.direction = new me.Vector2d(-1, 0);
             } else if (me.input.isKeyPressed('right')) {
                 this.flipX(false);
-                this.body.vel.x += this.body.accel.x * me.timer.tick * (this.knockbacked ? 0.0 : 1);
+                this.body.vel.x += this.body.accel.x * me.timer.tick;
                 this.direction = new me.Vector2d(1, 0);
             } else {
                 this.body.vel.x = 0;
             }
         }
 
-
-        //TODO : remove, just for debug purposes
-        if (me.input.isKeyPressed('debug')) {
-            me.game.world.getChildByName("HUD")[0].pigletRescued();
-        }
-
         //handling jump
         if (me.input.isKeyPressed('jump')) {
             if (!this.body.jumping &&
+                !this.body.knockbacked &&
                 (!this.body.falling ||
                  this.onAirTime < this.JUMP_MAX_AIRBONRNE_TIME)) {
                 this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
@@ -188,12 +183,13 @@ game.PlayerEntity = me.Entity.extend({
             return false;
         }
         else if(other.name == 'boar') {
-
             if(!this.renderable.isFlickering()) {
-                this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
+                this.body.vel = new me.Vector2d(0, 0);
+                console.log(other.pos.x - this.pos.x);
                 this.hit();
+                this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
             }
-            return false;
+            return !this.renderable.isFlickering();
         }
         else {
             //we're not knockbacked anymore
