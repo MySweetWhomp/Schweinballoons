@@ -104,7 +104,7 @@ game.PlayerEntity = me.Entity.extend({
 
         //TODO : remove, just for debug purposes
         if (me.input.isKeyPressed('debug')) {
-            this.knockback();
+            me.game.world.getChildByName("HUD")[0].pigletRescued();
         }
 
         //handling jump

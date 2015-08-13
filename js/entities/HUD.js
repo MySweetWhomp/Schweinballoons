@@ -25,6 +25,8 @@ game.HUD.Container = me.Container.extend({
         // add all piglets
         this.maxPiglets = 4;
         this.piglets = this.maxPiglets;
+
+        this.addChild(new me.Sprite(0, 0, {image: "HUDback"}));
         for (var i = this.maxPiglets - 1; i >= 0; --i) {
           this.addChild(new game.HUD.PigletItem(1 + ((9 + 1) * i) , 1));
         }
@@ -41,8 +43,7 @@ game.HUD.Container = me.Container.extend({
         // if enough piglets
         if (this.piglets >= 0){
           // remove a piglet from the screen
-          // TODO must not remove the Sprite but change the displayed frame
-          this.removeChild(this.getChildAt(this.piglets), false);
+          this.getChildAt(this.piglets).rescue();
         }
 
         // if no more piglets
@@ -58,26 +59,40 @@ game.HUD.Container = me.Container.extend({
 /**
 * a piglet hud indicator telling the number of piglets still alive
 */
-game.HUD.PigletItem = me.Sprite.extend({
+game.HUD.PigletItem = me.AnimationSheet.extend({
 
-  /**
-   * constructor
-   */
-  init: function(x, y) {
-    // call the parent constructor
-    this._super(me.Sprite, 'init', [x, y, {
-        image: "hudPiglet",
-        framewidth: 9,
-        frameheight: 9
-    }]);
-  },
+    /**
+    * constructor
+    */
+    init: function(x, y) {
+        // call the parent constructor
+        this._super(me.AnimationSheet, 'init', [x, y, {image: "HUD", framewidth: 9, frameheight: 9}]);
 
-  /**
-   * update function
-   */
-  update : function (dt) {
-    // we don't do anything for the moment here
-    //TODO : disable rendering when saved
-    return false;
-  }
+        // animations
+        this.addAnimation('notrescued', [0], 100);
+        this.addAnimation('rescued', [1], 100);
+
+        // kidnap the piglet
+        this.kidnap();
+    },
+
+    /**
+    * update function
+    */
+    update : function (dt) {
+        // we don't do anything for the moment here
+        //TODO : disable rendering when saved
+        return false;
+    },
+
+    rescue: function() {
+        if(!this.isCurrentAnimation('rescued'))
+            this.setCurrentAnimation('rescued');
+    },
+
+    kidnap: function() {
+        if(!this.isCurrentAnimation('notrescued'))
+            this.setCurrentAnimation('notrescued');
+    }
+
 });
