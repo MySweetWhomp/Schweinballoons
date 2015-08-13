@@ -183,13 +183,17 @@ game.PlayerEntity = me.Entity.extend({
             return false;
         }
         else if(other.name == 'boar') {
-            if(!this.renderable.isFlickering()) {
-                this.body.vel = new me.Vector2d(0, 0);
-                console.log(other.pos.x - this.pos.x);
-                this.hit();
-                this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
+            if(myShapeIndex == 0) {
+                if(!this.renderable.isFlickering()) {
+                    this.body.vel = new me.Vector2d(0, 0);
+                    console.log(other.pos.x - this.pos.x);
+                    this.hit();
+                    this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
+                }
+                return !this.renderable.isFlickering();
             }
-            return !this.renderable.isFlickering();
+            else
+                return false;
         }
         else {
             //we're not knockbacked anymore
