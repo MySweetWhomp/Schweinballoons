@@ -82,7 +82,7 @@ game.BoarEntity = me.Entity.extend({
             }
 
             // if out of viewport, we destroy the entity
-            if (!me.game.viewport.contains(this)) {
+            if (!me.game.viewport.overlaps(this)) {
                 me.game.world.removeChild(this);
             }
 
