@@ -140,10 +140,10 @@ game.BallEntity = me.Entity.extend({
     },
 
     onCollision: function(response, other) {
-        if (other.name !== 'player') {
-            this.bounceDirection();
-            this.powerDown();
-        } else {
+        var otherShapeIndex = response.a.name === other.name ? response.indexShapeA
+                                                              : response.indexShapeB;
+
+        if (other.name === 'player') {
             var playerShapeIndex = response.a.name === other.name ? response.indexShapeA
                                                                   : response.indexShapeB;
 
@@ -175,6 +175,17 @@ game.BallEntity = me.Entity.extend({
                     }
                 }
             }
+        } else if (other.name === 'boar') {
+            if (otherShapeIndex === 2) {
+                this.bounceDirection();
+                this.powerDown();
+            }
+        } else if (other.name === 'piglet') {
+            //TODO : ball shoots piglets
+            return false;
+        } else {
+            this.bounceDirection();
+            this.powerDown();
         }
         return false;
     }

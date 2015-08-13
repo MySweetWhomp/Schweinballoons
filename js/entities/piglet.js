@@ -61,6 +61,6 @@ game.PigletEntity = me.Entity.extend({
      */
     onCollision : function (response, other) {
         // Make all other objects solid
-        return other.name !== 'player';
+        return !(other.name === 'player' || other.name === 'ball' || other.name === 'boar');
     }
 });
