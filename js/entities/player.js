@@ -147,10 +147,10 @@ game.PlayerEntity = me.Entity.extend({
                 this.setCurrentAnimation('stun');
             } else if (this.body.jumping) {
                 this.setCurrentAnimation('jump');
-            } else if (this.body.vel.x !== 0) {
-                this.setCurrentAnimation('walk');
             } else if (this.body.falling) {
                 this.setCurrentAnimation('fall');
+            } else if (this.body.vel.x !== 0) {
+                this.setCurrentAnimation('walk');
             } else {
                 this.setCurrentAnimation('idle');
             }
