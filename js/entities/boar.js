@@ -40,8 +40,8 @@ game.BoarEntity = me.Entity.extend({
         this.direction = new me.Vector2d(1, 0);
 
         // add weakpoint shape
-        this.body.addShape(new me.Rect(-8, -3, 32, 3));
-        this.body.addShape(new me.Rect(0, 0, 15, 32));
+        this.body.addShape(new me.Rect(-4, -3, 24, 3));
+        this.body.addShape(new me.Rect(0, 3, 15, 29));
 
         // animations
         this.renderable.addAnimation('idle', [0, 1, 2], 150);
@@ -152,7 +152,7 @@ game.BoarEntity = me.Entity.extend({
         this.deathTimer = 0;//stamp = me.timer.getTime();
 
         // remove all shapes
-        while(this.body.removeShapeAt(this.body.shapes.length - 1) != 0);
+        while (this.body.removeShapeAt(this.body.shapes.length - 1) !== 0);
     },
 
    /**
@@ -175,10 +175,8 @@ game.BoarEntity = me.Entity.extend({
             return false;
         }  else {
             // if this is player, we pass through. else, turn around
-            if (other.name === 'player') {
+            if (['player', 'piglet'].indexOf(other.name) >= 0) {
                 return false;
-            } else if (other.name === 'piglet') {
-                return false
             } else if (other.name === 'ball') {
                 // TODO : ball hits monster
                 return false;
