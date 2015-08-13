@@ -35,6 +35,7 @@ var game = {
         // add our player entity in the entity pool
         me.pool.register('player', game.PlayerEntity);
         me.pool.register('ball', game.BallEntity);
+        me.pool.register('piglet', game.PigletEntity);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, 'left');
