@@ -99,17 +99,20 @@ game.PlayerEntity = me.Entity.extend({
      */
     update : function (dt) {
         // handling movement on the side
-        if (me.input.isKeyPressed('left')) {
-            this.flipX(true);
-            this.body.vel.x -= this.body.accel.x * me.timer.tick * (this.knockbacked ? 0.0 : 1);
-            this.direction = new me.Vector2d(-1, 0);
-        } else if (me.input.isKeyPressed('right')) {
-            this.flipX(false);
-            this.body.vel.x += this.body.accel.x * me.timer.tick * (this.knockbacked ? 0.0 : 1);
-            this.direction = new me.Vector2d(1, 0);
-        } else if(!this.knockbacked) {
-            this.body.vel.x = 0;
+        if(!this.knockbacked) {
+            if (me.input.isKeyPressed('left')) {
+                this.flipX(true);
+                this.body.vel.x -= this.body.accel.x * me.timer.tick * (this.knockbacked ? 0.0 : 1);
+                this.direction = new me.Vector2d(-1, 0);
+            } else if (me.input.isKeyPressed('right')) {
+                this.flipX(false);
+                this.body.vel.x += this.body.accel.x * me.timer.tick * (this.knockbacked ? 0.0 : 1);
+                this.direction = new me.Vector2d(1, 0);
+            } else {
+                this.body.vel.x = 0;
+            }
         }
+
 
         //TODO : remove, just for debug purposes
         if (me.input.isKeyPressed('debug')) {
@@ -185,6 +188,7 @@ game.PlayerEntity = me.Entity.extend({
             return false;
         }
         else if(other.name == 'boar') {
+
             if(!this.renderable.isFlickering()) {
                 this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
                 this.hit();
