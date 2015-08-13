@@ -26,7 +26,7 @@ game.PlayerEntity = me.Entity.extend({
         // setting constants
         this.onAirTime = 100;
         this.JUMP_MAX_AIRBONRNE_TIME = 80;
-        this.FLICKERING_TIME = 2000;
+        this.FLICKERING_TIME = 500;
 
         // setting initial direction
         this.direction = new me.Vector2d(1, 0);
@@ -174,6 +174,14 @@ game.PlayerEntity = me.Entity.extend({
     onCollision : function (response, other) {
         var myShapeIndex = response.a.name === this.name ? response.indexShapeA
                                                          : response.indexShapeB;
+        var otherShapeIndex = response.a.name === other.name ? response.indexShapeA
+                                                              : response.indexShapeB;
+
+
+        // kick collision shape must not be solid
+        if (myShapeIndex > 0) {
+            return false;
+        }
 
         // handling custom collision
         if (other.name === 'ball') {
@@ -185,29 +193,48 @@ game.PlayerEntity = me.Entity.extend({
             return false;
         }
         else if(other.name == 'boar') {
+            //if our body (not the foot) touches the boar
             if(myShapeIndex == 0) {
-                if(!this.renderable.isFlickering()) {
-                    this.body.vel = new me.Vector2d(0, 0);
-                    this.hit();
-                    this.knockback(8, new me.Vector2d(
-                        (other.pos.x - this.pos.x) > 0 ? 1 : -1,
-                        0
-                    ));
+                //if we touch its damage hitbox
+                if(otherShapeIndex == 0) {
+                    //If we're not invincible and not stunned
+                    if(!this.renderable.isFlickering() && !other.stunned) {
+                        //giving priority over stunning. way better
+                        if(!me.collision.shouldCollide(this, other.body.getShape(1))) {
+                            this.body.vel = new me.Vector2d(0, 0);
+                            this.hit();
+                            this.knockback(8, new me.Vector2d(
+                                (other.pos.x - this.pos.x) > 0 ? 1 : -1,
+                                0
+                            ));
+                        }
+                    }
+                    return !this.renderable.isFlickering();
                 }
-                return !this.renderable.isFlickering();
+                //if we touch the weakpoint hitbox (tl;dr the head)
+                else {
+                    var relativeOverlapV = response.overlapV.clone().scale(this.name == response.a.name ? 1 : 0);
+                    if(relativeOverlapV.y > 0) {
+                        if((this.bottom - relativeOverlapV.y) < other.top) {
+                            //we bounce on the head
+                            if(!other.stunned)
+                                this.body.vel = (new me.Vector2d(
+                                    -8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1,
+                                    -8));
+                            other.stun();
+                        }
+                    }
+                    return !other.stunned;
+                }
             }
             else
-                return false;
+                return true;
         }
         else {
             //we're not knockbacked anymore
             this.knockbacked = false;
         }
 
-        // kick collision shape must not be solid
-        if (myShapeIndex > 0) {
-            return this.body.falling;
-        }
         // Make all other objects solid
         return true;
     }
