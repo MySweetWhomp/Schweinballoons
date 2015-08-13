@@ -39,13 +39,6 @@
     <property name="image" value="ball"/>
    </properties>
   </object>
-  <object id="42" name="piglet" x="336" y="32" width="16" height="32">
-   <properties>
-    <property name="frameheight" value="32"/>
-    <property name="framewidth" value="26"/>
-    <property name="image" value="piglet"/>
-   </properties>
-  </object>
   <object id="44" name="piglet" x="512" y="96" width="16" height="32">
    <properties>
     <property name="frameheight" value="32"/>

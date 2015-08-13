@@ -23,7 +23,7 @@ game.HUD.Container = me.Container.extend({
         this.z = Infinity;
 
         // add all piglets
-        this.maxPiglets = 4;
+        this.maxPiglets = me.game.world.getChildByName("piglet").length;
         this.piglets = this.maxPiglets;
 
         this.addChild(new me.Sprite(0, 0, {image: "HUDback"}));

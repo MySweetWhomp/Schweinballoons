@@ -163,14 +163,14 @@ game.PlayerEntity = me.Entity.extend({
                                                          : response.indexShapeB;
         //we're not knockbacked anymore
         this.knockbacked = false;
-            console.log(other.name);
 
+        // handling custom collision
         if (other.name === 'ball') {
             // TODO if jumping ON the ball, must actually `return true` to have a collision
             return false;
         }
         else if(other.name === 'piglet') {
-
+            other.rescue();
             return false;
         }
 

@@ -18,7 +18,7 @@ game.PigletEntity = me.Entity.extend({
         this.alwaysUpdate = true;
 
         // we set initial values
-        this.kidnapped = false;
+        this.rescued = true;
 
         // animations
         this.renderable.addAnimation('kidnapped', [0, 1, 2, 3], 100);
@@ -30,6 +30,14 @@ game.PigletEntity = me.Entity.extend({
         if (!this.renderable.isCurrentAnimation(name)) {
             this.renderable.setCurrentAnimation(name, onComplete);
         }
+    },
+
+    rescue: function() {
+        this.setCurrentAnimation('freed');
+        this.rescued = true;
+        
+        var hud = me.game.world.getChildByName('HUD')[0];
+        hud.pigletRescued();
     },
 
     /**
