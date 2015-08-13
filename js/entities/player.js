@@ -138,7 +138,9 @@ game.PlayerEntity = me.Entity.extend({
 
         // enable kicking
         if(me.input.isKeyPressed('kick')) {
-            this.kick();
+            if(!this.knockbacked) {
+                this.kick();
+            }
         }
 
         // update animation
