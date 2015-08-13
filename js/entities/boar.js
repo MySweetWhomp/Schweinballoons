@@ -14,7 +14,7 @@ game.BoarEntity = me.Entity.extend({
         // we set the velocity of the boar's body
         this.body.setVelocity(1, 9);
         // shift sprite so that collision box is its bottom
-        this.renderable.translate(0, -2);
+        this.renderable.translate(0, -1);
 
         // we always update the piglets, ALWAYS
         this.alwaysUpdate = true;
