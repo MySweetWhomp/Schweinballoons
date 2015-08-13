@@ -173,6 +173,9 @@ game.PlayerEntity = me.Entity.extend({
             other.rescue();
             return false;
         }
+        else if(other.name == 'boar') {
+            return false;
+        }
 
         // kick collision shape must not be solid
         if (myShapeIndex > 0) {
