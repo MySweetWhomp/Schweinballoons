@@ -23,9 +23,10 @@ game.PlayerEntity = me.Entity.extend({
         // we always update the player, ALWAYS
         this.alwaysUpdate = true;
 
-        // setting constants related to jumping
+        // setting constants
         this.onAirTime = 100;
         this.JUMP_MAX_AIRBONRNE_TIME = 80;
+        this.FLICKERING_TIME = 2000;
 
         // setting initial direction
         this.direction = new me.Vector2d(1, 0);
@@ -59,12 +60,13 @@ game.PlayerEntity = me.Entity.extend({
     /**
      * knocks the player back
      */
-     knockback: function (strength) {
+     knockback: function (strength, direction) {
          // set default strength
-         strength = strength || 4;
+         strength = strength || 2;
+         direction = direction || this.direction;
 
         // change the velocity
-        this.body.vel.add(new me.Vector2d(-strength * this.direction.x, -strength));
+        this.body.vel.add(new me.Vector2d(-strength * 10 * direction.x, -strength));
 
         // set state as currently knockbacked
         this.knockbacked = true;
@@ -84,6 +86,13 @@ game.PlayerEntity = me.Entity.extend({
             ));
         }
     },
+
+    /**
+     * hit
+     */
+     hit: function() {
+        this.renderable.flicker(this.FLICKERING_TIME);
+     },
 
     /**
      * update the entity
@@ -134,7 +143,9 @@ game.PlayerEntity = me.Entity.extend({
 
         // update animation
         if(!this.kicking){
-            if (this.body.jumping) {
+            if (this.knockbacked) {
+                this.setCurrentAnimation('stun');
+            } else if (this.body.jumping) {
                 this.setCurrentAnimation('jump');
             } else if (this.body.falling) {
                 this.setCurrentAnimation('fall');
@@ -161,8 +172,6 @@ game.PlayerEntity = me.Entity.extend({
     onCollision : function (response, other) {
         var myShapeIndex = response.a.name === this.name ? response.indexShapeA
                                                          : response.indexShapeB;
-        //we're not knockbacked anymore
-        this.knockbacked = false;
 
         // handling custom collision
         if (other.name === 'ball') {
@@ -174,7 +183,15 @@ game.PlayerEntity = me.Entity.extend({
             return false;
         }
         else if(other.name == 'boar') {
+            if(!this.renderable.isFlickering()) {
+                this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
+                this.hit();
+            }
             return false;
+        }
+        else {
+            //we're not knockbacked anymore
+            this.knockbacked = false;
         }
 
         // kick collision shape must not be solid

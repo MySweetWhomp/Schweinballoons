@@ -25,7 +25,7 @@
   <object id="35" x="480" y="144" width="16" height="48"/>
  </objectgroup>
  <objectgroup name="player">
-  <object id="13" name="player" x="176" y="128" width="16" height="32">
+  <object id="13" name="player" x="416" y="16" width="16" height="32">
    <properties>
     <property name="frameheight" value="40"/>
     <property name="framewidth" value="40"/>
