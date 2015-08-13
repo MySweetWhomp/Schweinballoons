@@ -7,6 +7,17 @@ game.BoarEntity = me.Entity.extend({
      * constructor
      */
     init:function (x, y, settings) {
+        var width = settings.width,
+            height = settings.height;
+
+        settings.image = 'boar';
+        settings.width = 16;
+        settings.height = 32;
+        settings.framewidth = 40;
+        settings.frameheight = 40;
+
+        settings.shapes[0] = new me.Rect(0, 0, 16, 32);
+
         // call the constructor
         this._super(me.Entity, 'init', [x, y , settings]);
         this.name = 'boar';
@@ -40,6 +51,12 @@ game.BoarEntity = me.Entity.extend({
         this.renderable.addAnimation('turnAround', [9, 9], 50);
         this.renderable.addAnimation('death', [10, 11], 50);
         this.setCurrentAnimation('walking');
+
+        // path
+        x = this.pos.x;
+        this.startX = x;
+        this.endX = x + width - settings.width;
+        this.pos.x = this.endX;
     },
 
     setCurrentAnimation: function(name, onComplete) {
@@ -61,6 +78,12 @@ game.BoarEntity = me.Entity.extend({
     update : function (dt) {
         // apply physics to the body (this moves the entity)
         this.body.update(dt);
+
+        // check if we need to turn around (according to path)
+        if (this.direction.x < 0 && this.pos.x < this.startX ||
+            this.direction.x > 0 && this.pos.x > this.endX) {
+            this.turnAround();
+        }
 
         if (me.input.isKeyPressed('debug'))
             this.kill();
@@ -88,7 +111,6 @@ game.BoarEntity = me.Entity.extend({
 
             // counting time
             this.deathTimer += dt;
-
         } else {
             // stops if stunned, else walk
             if (this.stunned) {
@@ -107,6 +129,15 @@ game.BoarEntity = me.Entity.extend({
 
         // return true if we moved or if the renderable was updated
         return (this._super(me.Entity, 'update', [dt]));
+    },
+
+    turnAround: function() {
+        //we change the animation
+        this.setCurrentAnimation('turnAround', (function () {
+            this.direction = this.direction.reflect(new me.Vector2d(0, 1));
+            this.setCurrentAnimation('walking');
+            this.renderable.flipX(this.direction.x < 0);
+        }).bind(this));
     },
 
     /**
@@ -158,12 +189,7 @@ game.BoarEntity = me.Entity.extend({
                     var relativeOverlapV = response.overlapV.clone().scale(this.name === response.a.name ? 1 : 0);
                     response.a.pos.sub(relativeOverlapV);
 
-                    //we change the animation
-                    this.setCurrentAnimation('turnAround', (function () {
-                        this.direction = this.direction.reflect(new me.Vector2d(0, 1));
-                        this.setCurrentAnimation('walking');
-                        this.renderable.flipX(this.direction.x < 0);
-                    }).bind(this));
+                    this.turnAround();
 
                     //this is solid
                     return true;
