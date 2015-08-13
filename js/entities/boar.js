@@ -24,7 +24,7 @@ game.BoarEntity = me.Entity.extend({
         this.STUN_DURATION = 1000;
         this.direction = new me.Vector2d(1, 0);
 
-        //add weakpoint shape
+        // add weakpoint shape
         this.body.addShape(new me.Rect(-8, -3, 32, 3));
         this.body.addShape(new me.Rect(0, 0, 15, 32));
 
@@ -45,7 +45,7 @@ game.BoarEntity = me.Entity.extend({
     },
 
     stun: function() {
-        if(!this.stunned) {
+        if (!this.stunned) {
             this.stunned = true;
             setTimeout((function() { this.stunned = false; }).bind(this), this.STUN_DURATION);
         }
@@ -58,13 +58,12 @@ game.BoarEntity = me.Entity.extend({
         // apply physics to the body (this moves the entity)
         this.body.update(dt);
 
-        //move to its direction
-        if(this.stunned) {
+        // move to its direction
+        if (this.stunned) {
             this.setCurrentAnimation('stun');
             this.body.vel = new me.Vector2d(0, 0);
-        }
-        else {
-            if(!this.renderable.isCurrentAnimation('turnAround')){
+        } else {
+            if (!this.renderable.isCurrentAnimation('turnAround')){
                 this.setCurrentAnimation('walking');
                 this.body.vel.x += this.body.accel.x * me.timer.tick * this.direction.x;
             }
@@ -87,32 +86,34 @@ game.BoarEntity = me.Entity.extend({
         // weakpoint hitbox collision shape must not be solid
         if (myShapeIndex > 0) {
             return false;
-        }
-        else {
-
-            //if this is player, we pass through. else, turn around
-            if(other.name == 'player') {
+        }  else {
+            // if this is player, we pass through. else, turn around
+            if (other.name === 'player') {
                 return false;
-            } else if(other.name == 'piglet') {
+            } else if (other.name === 'piglet') {
                 return false
-            } else if(other.name == 'ball') {
-                //TODO : ball hits monster
+            } else if (other.name === 'ball') {
+                // TODO : ball hits monster
                 return false;
             } else {
-                //if we hit a wall
-                if(response.overlapN.x && !this.stunned) {
-                    var relativeOverlapV = response.overlapV.clone().scale(this.name == response.a.name ? 1 : 0);
+                // if we hit a wall
+                if (response.overlapN.x && !this.stunned) {
+                    // we compute independant overlap and remove the object from the wall
+                    var relativeOverlapV = response.overlapV.clone().scale(this.name === response.a.name ? 1 : 0);
                     response.a.pos.sub(relativeOverlapV);
+
+                    //we change the animation
                     this.setCurrentAnimation('turnAround', (function () {
                         this.direction = this.direction.reflect(new me.Vector2d(0, 1));
                         this.setCurrentAnimation('walking');
                         this.renderable.flipX(this.direction.x < 0);
                     }).bind(this));
 
+                    //this is solid
                     return true;
                 }
             }
-
+            //make all objects solid
             return true;
         }
     }

@@ -99,7 +99,7 @@ game.PlayerEntity = me.Entity.extend({
      */
     update : function (dt) {
         // handling movement on the side
-        if(!this.knockbacked) {
+        if (!this.knockbacked) {
             if (me.input.isKeyPressed('left')) {
                 this.flipX(true);
                 this.body.vel.x -= this.body.accel.x * me.timer.tick;
@@ -113,7 +113,7 @@ game.PlayerEntity = me.Entity.extend({
             }
         }
 
-        //handling jump
+        // handling jump
         if (me.input.isKeyPressed('jump')) {
             if (!this.body.jumping &&
                 !this.knockbacked &&
@@ -135,14 +135,14 @@ game.PlayerEntity = me.Entity.extend({
         me.collision.check(this);
 
         // enable kicking
-        if(me.input.isKeyPressed('kick')) {
-            if(!this.knockbacked) {
+        if (me.input.isKeyPressed('kick')) {
+            if (!this.knockbacked) {
                 this.kick();
             }
         }
 
         // update animation
-        if(!this.kicking){
+        if (!this.kicking){
             if (this.knockbacked) {
                 this.setCurrentAnimation('stun');
             } else if (this.body.jumping) {
@@ -178,7 +178,6 @@ game.PlayerEntity = me.Entity.extend({
         var otherShapeIndex = response.a.name === other.name ? response.indexShapeA
                                                               : response.indexShapeB;
 
-
         // kick collision shape must not be solid
         if (myShapeIndex > 0) {
             return false;
@@ -191,51 +190,36 @@ game.PlayerEntity = me.Entity.extend({
         } else if (other.name === 'piglet') {
             other.rescue();
             return false;
-        } else if (other.name == 'boar') {
-            //if our body (not the foot) touches the boar
-            if(myShapeIndex == 0) {
-                //if we touch its damage hitbox
-                /*if(otherShapeIndex == 0) {
-                    //If we're not invincible and not stunned
-                    if(!this.renderable.isFlickering() && !other.stunned) {
-                        //giving priority over stunning. way better
-                        this.hit();
-                        //this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
-                    }
-                    return !this.renderable.isFlickering() && !other.stunned;
-                } */
-
-                if (otherShapeIndex == 0) {
-                    return false;
-                } else if (otherShapeIndex == 1) {
-                    var relativeOverlapV = response.overlapV.clone().scale(this.name == response.a.name ? 1 : 0);
-                    if(!this.knockbacked && relativeOverlapV.y > 0) {
-                        console.log(this.body.vel.y);
-                        if((this.bottom - relativeOverlapV.y) < other.top && this.body.vel.y > 0) {
-                            //we bounce on the head
-                            if(!other.stunned) {
-                                this.body.vel = (new me.Vector2d(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -8));
-                            }
-                            other.stun();
-                        }
-                    }
-                    return !other.stunned && !this.knockbacked;
-                } else {
-                    //If we're not invincible and not stunned
-                    if(!this.renderable.isFlickering() && !other.stunned) {
-                        //giving priority over stunning. way better
-                        this.hit();
-                        this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
-                    }
-                    return !this.renderable.isFlickering() && !other.stunned;
+        } else if (other.name === 'boar') {
+            // if our body (not the foot) touches the boar
+            if (otherShapeIndex === 0) {
+                return false;
+            } else if (otherShapeIndex === 1) {
+                // computing independant overlap vector
+                var relativeOverlapV = response.overlapV.clone().scale(this.name === response.a.name ? 1 : 0);
+                // if we come from bottom
+                if (!this.knockbacked &&
+                    !other.stunned &&
+                    relativeOverlapV.y > 0 &&
+                    this.bottom - relativeOverlapV.y < other.top &&
+                    this.body.vel.y > 0) {
+                        // we bounce on the head
+                        this.body.vel = (new me.Vector2d(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -8));
+                        other.stun();
                 }
-            }
-            else {
-                return true;
+                return !other.stunned && !this.knockbacked;
+            } else {
+                // If we're not invincible and not stunned
+                if (!this.renderable.isFlickering() && !other.stunned) {
+                    // giving priority over stunning. way better
+                    this.hit();
+                    this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
+                }
+                return !this.renderable.isFlickering() && !other.stunned;
             }
         }
         else {
-            //we're not knockbacked anymore
+            // we're not knockbacked anymore
             this.knockbacked = false;
         }
 
