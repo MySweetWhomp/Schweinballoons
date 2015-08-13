@@ -11,9 +11,6 @@ game.PigletEntity = me.Entity.extend({
         this._super(me.Entity, 'init', [x, y , settings]);
         this.name = 'piglet';
 
-        // shift sprite so that collision box is its bottom
-        this.renderable.translate(0, -4);
-
         // we set the velocity of the player's body
         this.body.setVelocity(0, 0);
 
