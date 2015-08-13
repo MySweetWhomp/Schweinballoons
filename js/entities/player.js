@@ -162,7 +162,9 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         // return true if we moved or if the renderable was updated
-        return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
+        return (this._super(me.Entity, 'update', [dt]) ||
+                this.body.vel.x !== 0 ||
+                this.body.vel.y !== 0);
     },
 
    /**
@@ -175,7 +177,7 @@ game.PlayerEntity = me.Entity.extend({
 
         // handling custom collision
         if (other.name === 'ball') {
-            // TODO if jumping ON the ball, must actually `return true` to have a collision
+            // TODO if jumping ON ball, must `return true` to have a collision
             return false;
         }
         else if(other.name === 'piglet') {
@@ -186,9 +188,11 @@ game.PlayerEntity = me.Entity.extend({
             if(myShapeIndex == 0) {
                 if(!this.renderable.isFlickering()) {
                     this.body.vel = new me.Vector2d(0, 0);
-                    console.log(other.pos.x - this.pos.x);
                     this.hit();
-                    this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
+                    this.knockback(8, new me.Vector2d(
+                        (other.pos.x - this.pos.x) > 0 ? 1 : -1,
+                        0
+                    ));
                 }
                 return !this.renderable.isFlickering();
             }
