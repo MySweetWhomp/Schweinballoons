@@ -18,10 +18,14 @@ game.BoarEntity = me.Entity.extend({
 
         // we always update the piglets, ALWAYS
         this.alwaysUpdate = true;
+        this.dying = false;
 
         // we set initial values
         this.hostile = true;
         this.STUN_DURATION = 1000;
+        this.DEATH_STAND_DURATION = 500;
+        this.DEATH_MAX_HEIGHT = 40;
+        this.TIME_TO_DEATH_MAX_HEIGHT = 400;
         this.direction = new me.Vector2d(1, 0);
 
         // add weakpoint shape
@@ -47,7 +51,7 @@ game.BoarEntity = me.Entity.extend({
     stun: function() {
         if (!this.stunned) {
             this.stunned = true;
-            setTimeout((function() { this.stunned = false; }).bind(this), this.STUN_DURATION);
+            me.timer.setTimeout((function() { this.stunned = false; }).bind(this), this.STUN_DURATION);
         }
     },
 
@@ -58,16 +62,46 @@ game.BoarEntity = me.Entity.extend({
         // apply physics to the body (this moves the entity)
         this.body.update(dt);
 
-        // move to its direction
-        if (this.stunned) {
-            this.setCurrentAnimation('stun');
-            this.body.vel = new me.Vector2d(0, 0);
+        if (me.input.isKeyPressed('debug'))
+            this.kill();
+
+        // if the entity is dying
+        if (this.dying) {
+            // set animation
+            this.setCurrentAnimation('death');
+
+            // if done standing
+            if (this.deathTimer >= this.DEATH_STAND_DURATION) {
+                // adding offset to describe a parabola, using the formula :
+                // f(t + dt) = f'(t)dt + f(t)
+                // here with f(t) = -h/t_h² * (t-t_h)² + h
+                // using this formula removes the need for an useless variable
+                var a = this.DEATH_MAX_HEIGHT / Math.pow(this.TIME_TO_DEATH_MAX_HEIGHT, 2);
+                var t = this.deathTimer - this.DEATH_STAND_DURATION - this.TIME_TO_DEATH_MAX_HEIGHT;
+                this.body.pos.y += 2*a*t*dt;
+            }
+
+            // if out of viewport, we destroy the entity
+            if (!me.game.viewport.contains(this)) {
+                me.game.world.removeChild(this);
+            }
+
+            // counting time
+            this.deathTimer += dt;
+
         } else {
-            if (!this.renderable.isCurrentAnimation('turnAround')){
-                this.setCurrentAnimation('walking');
-                this.body.vel.x += this.body.accel.x * me.timer.tick * this.direction.x;
+            // stops if stunned, else walk
+            if (this.stunned) {
+                this.setCurrentAnimation('stun');
+                this.body.vel = new me.Vector2d(0, 0);
+            } else {
+                if (!this.renderable.isCurrentAnimation('turnAround')){
+                    this.setCurrentAnimation('walking');
+                    this.body.vel.x += this.body.accel.x * me.timer.tick * this.direction.x;
+                }
             }
         }
+
         // handle collisions against other shapes
         me.collision.check(this);
 
@@ -75,11 +109,33 @@ game.BoarEntity = me.Entity.extend({
         return (this._super(me.Entity, 'update', [dt]));
     },
 
+    /**
+      * kill
+      * (this will destroy the entity : be careful)
+      */
+    kill: function() {
+        // stopping body
+        this.dying = true;
+        this.body.gravity = 0;
+        this.body.vel = new me.Vector2d(0, 0);
+        this.deathTimer = 0;//stamp = me.timer.getTime();
+
+        // remove all shapes
+        while(this.body.removeShapeAt(this.body.shapes.length - 1) != 0);
+    },
+
    /**
      * colision handler
      * (called when colliding with other objects)
      */
     onCollision : function (response, other) {
+        // if currently dying
+        if (this.dying) {
+            //nothing is solid
+            return false;
+        }
+
+        // get shape index for this entity
         var myShapeIndex = response.a.name === this.name ? response.indexShapeA
                                                          : response.indexShapeB;
 
