@@ -26,7 +26,7 @@ game.PlayerEntity = me.Entity.extend({
         // setting constants
         this.onAirTime = 100;
         this.JUMP_MAX_AIRBONRNE_TIME = 80;
-        this.FLICKERING_TIME = 500;
+        this.FLICKERING_TIME = 2000;
 
         // setting initial direction
         this.direction = new me.Vector2d(1, 0);
@@ -69,7 +69,7 @@ game.PlayerEntity = me.Entity.extend({
          direction = direction || this.direction;
 
         // change the velocity
-        this.body.vel.add(new me.Vector2d(-strength * 10 * direction.x, -strength));
+        this.body.vel = new me.Vector2d(-strength * 20 * direction.x, -strength);
     },
 
     /**
@@ -116,7 +116,7 @@ game.PlayerEntity = me.Entity.extend({
         //handling jump
         if (me.input.isKeyPressed('jump')) {
             if (!this.body.jumping &&
-                !this.body.knockbacked &&
+                !this.knockbacked &&
                 (!this.body.falling ||
                  this.onAirTime < this.JUMP_MAX_AIRBONRNE_TIME)) {
                 this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
@@ -154,7 +154,8 @@ game.PlayerEntity = me.Entity.extend({
             } else {
                 this.setCurrentAnimation('idle');
             }
-        } else {
+        }
+        else {
             this.setCurrentAnimation('kick', (function() {
                 this.kicking = false;
                 this.body.removeShapeAt(1);
@@ -187,48 +188,51 @@ game.PlayerEntity = me.Entity.extend({
         if (other.name === 'ball') {
             // TODO if jumping ON ball, must `return true` to have a collision
             return false;
-        }
-        else if(other.name === 'piglet') {
+        } else if (other.name === 'piglet') {
             other.rescue();
             return false;
-        }
-        else if(other.name == 'boar') {
+        } else if (other.name == 'boar') {
             //if our body (not the foot) touches the boar
             if(myShapeIndex == 0) {
                 //if we touch its damage hitbox
-                if(otherShapeIndex == 0) {
+                /*if(otherShapeIndex == 0) {
                     //If we're not invincible and not stunned
                     if(!this.renderable.isFlickering() && !other.stunned) {
                         //giving priority over stunning. way better
-                        if(!me.collision.shouldCollide(this, other.body.getShape(1))) {
-                            this.body.vel = new me.Vector2d(0, 0);
-                            this.hit();
-                            this.knockback(8, new me.Vector2d(
-                                (other.pos.x - this.pos.x) > 0 ? 1 : -1,
-                                0
-                            ));
-                        }
+                        this.hit();
+                        //this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
                     }
-                    return !this.renderable.isFlickering();
-                }
-                //if we touch the weakpoint hitbox (tl;dr the head)
-                else {
+                    return !this.renderable.isFlickering() && !other.stunned;
+                } */
+
+                if (otherShapeIndex == 0) {
+                    return false;
+                } else if (otherShapeIndex == 1) {
                     var relativeOverlapV = response.overlapV.clone().scale(this.name == response.a.name ? 1 : 0);
-                    if(relativeOverlapV.y > 0) {
-                        if((this.bottom - relativeOverlapV.y) < other.top) {
+                    if(!this.knockbacked && relativeOverlapV.y > 0) {
+                        console.log(this.body.vel.y);
+                        if((this.bottom - relativeOverlapV.y) < other.top && this.body.vel.y > 0) {
                             //we bounce on the head
-                            if(!other.stunned)
-                                this.body.vel = (new me.Vector2d(
-                                    -8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1,
-                                    -8));
+                            if(!other.stunned) {
+                                this.body.vel = (new me.Vector2d(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -8));
+                            }
                             other.stun();
                         }
                     }
-                    return !other.stunned;
+                    return !other.stunned && !this.knockbacked;
+                } else {
+                    //If we're not invincible and not stunned
+                    if(!this.renderable.isFlickering() && !other.stunned) {
+                        //giving priority over stunning. way better
+                        this.hit();
+                        this.knockback(8, new me.Vector2d((other.pos.x - this.pos.x) > 0 ? 1 : -1, 0));
+                    }
+                    return !this.renderable.isFlickering() && !other.stunned;
                 }
             }
-            else
+            else {
                 return true;
+            }
         }
         else {
             //we're not knockbacked anymore

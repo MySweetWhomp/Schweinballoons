@@ -21,11 +21,12 @@ game.BoarEntity = me.Entity.extend({
 
         // we set initial values
         this.hostile = true;
-        this.STUN_DURATION = 3000;
+        this.STUN_DURATION = 1000;
         this.direction = new me.Vector2d(1, 0);
 
         //add weakpoint shape
         this.body.addShape(new me.Rect(-8, -3, 32, 3));
+        this.body.addShape(new me.Rect(0, 0, 15, 32));
 
         // animations
         this.renderable.addAnimation('idle', [0, 1, 2], 150);
