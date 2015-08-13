@@ -93,11 +93,12 @@ game.BoarEntity = me.Entity.extend({
             //if this is player, we pass through. else, turn around
             if(other.name == 'player') {
                 return false;
-            }
-            else if(other.name == 'piglet') {
+            } else if(other.name == 'piglet') {
                 return false
-            }
-            else {
+            } else if(other.name == 'ball') {
+                //TODO : ball hits monster
+                return false;
+            } else {
                 //if we hit a wall
                 if(response.overlapN.x && !this.stunned) {
                     var relativeOverlapV = response.overlapV.clone().scale(this.name == response.a.name ? 1 : 0);
