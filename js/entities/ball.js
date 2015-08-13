@@ -127,8 +127,7 @@ game.BallEntity = me.Entity.extend({
             var playerShapeIndex = response.a.name === other.name ? response.indexShapeA
                                                                   : response.indexShapeB;
 
-            // bounce around player
-            // if player is hitting then we go horizontal
+            // if the player is hitting then we go horizontal
             if (other.kicking) {
                 this.powerUp();
                 if (other.direction.x >= 0) {

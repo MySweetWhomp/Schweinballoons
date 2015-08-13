@@ -26,7 +26,7 @@ game.HUD.Container = me.Container.extend({
         this.maxPiglets = 4;
         this.piglets = this.maxPiglets;
         for (var i = this.maxPiglets - 1; i >= 0; --i) {
-          this.addChild(new game.HUD.PigletItem(1 + ((16 + 1) * i) , 1));
+          this.addChild(new game.HUD.PigletItem(1 + ((9 + 1) * i) , 1));
         }
     },
 
@@ -41,6 +41,7 @@ game.HUD.Container = me.Container.extend({
         // if enough piglets
         if (this.piglets >= 0){
           // remove a piglet from the screen
+          // TODO must not remove the Sprite but change the displayed frame
           this.removeChild(this.getChildAt(this.piglets), false);
         }
 
@@ -64,7 +65,11 @@ game.HUD.PigletItem = me.Sprite.extend({
    */
   init: function(x, y) {
     // call the parent constructor
-    this._super(me.Sprite, 'init', [x, y, {image: "hudPiglet"}]);
+    this._super(me.Sprite, 'init', [x, y, {
+        image: "hudPiglet",
+        framewidth: 9,
+        frameheight: 9
+    }]);
   },
 
   /**
