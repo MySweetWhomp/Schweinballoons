@@ -50,6 +50,7 @@ game.PlayerEntity = me.Entity.extend({
     },
 
     flipX: function(flipX) {
+        // XXX Should we prevent flipping when kicking or move the kick collision shape?
         if (!this.kicking) {
             this.renderable.flipX(flipX);
         }
@@ -166,8 +167,11 @@ game.PlayerEntity = me.Entity.extend({
         if (other.name === 'ball') {
             // TODO if jumping ON the ball, must actually `return true` to have a collision
             return false;
-        } else if (myShapeIndex > 0) {
-            return false;
+        }
+
+        // kick collision shape must not be solid
+        if (myShapeIndex > 0) {
+            return this.body.falling;
         }
         // Make all other objects solid
         return true;

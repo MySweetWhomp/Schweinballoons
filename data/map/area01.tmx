@@ -27,8 +27,8 @@
   </object>
   <object id="14" name="ball" x="224" y="80" width="16" height="16">
    <properties>
-    <property name="frameheight" value="16"/>
-    <property name="framewidth" value="16"/>
+    <property name="frameheight" value="20"/>
+    <property name="framewidth" value="20"/>
     <property name="image" value="ball"/>
    </properties>
   </object>

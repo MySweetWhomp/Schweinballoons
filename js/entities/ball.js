@@ -28,6 +28,20 @@ game.BallEntity = me.Entity.extend({
         this.direction = new me.Vector2d(0, 1);
         this.lastDirectionChange = 50;
         this.BEFORE_DIRECTION_CHANGE_TIME = 50;
+
+        // define animations
+        this.renderable.addAnimation('idle', [0, 1], 200);
+        this.renderable.addAnimation('jumped', [2, 2], 50);
+        this.renderable.addAnimation('vAcceleration', [3, 4], 50);
+        this.renderable.addAnimation('kicked', [5, 5], 50);
+        this.renderable.addAnimation('hAcceleration', [6, 7], 50);
+        this.setCurrentAnimation('idle');
+    },
+
+    setCurrentAnimation: function(name, onComplete) {
+        if (!this.renderable.isCurrentAnimation(name)) {
+            this.renderable.setCurrentAnimation(name, onComplete);
+        }
     },
 
     /**
@@ -88,7 +102,19 @@ game.BallEntity = me.Entity.extend({
 
         this.lastDirectionChange += dt;
 
-        return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
+        // manage animations
+        if (!this.renderable.isCurrentAnimation('kicked')) {
+            if (this.powerLevel > 0) {
+                this.setCurrentAnimation(
+                    (this.direction.x ? 'h' :'v') + 'Acceleration'
+                );
+            } else {
+                this.setCurrentAnimation('idle');
+            }
+        }
+
+        return (this._super(me.Entity, 'update', [dt]) ||
+                this.body.vel.x !== 0 || this.body.vel.y !== 0);
     },
 
     go: function(x, y) {
@@ -135,24 +161,33 @@ game.BallEntity = me.Entity.extend({
                 } else {
                     this.goLeft();
                 }
+                this.setCurrentAnimation('kicked', (function() {
+                    this.setCurrentAnimation('hAcceleration');
+                }).bind(this));
+            } else if (other.body.falling) {
+                // if the player is hitting then we go down
+                this.goDown();
+                other.body.vel.add(new me.Vector2d(0, -4));
+                return true;
             } else {
-                this.powerDown();
-                if ((Math.abs(response.overlapV.x) > Math.abs(response.overlapV.y)) &&
-                    (other.body.vel.x !== 0 || other.onAirTime === 0)) {
-                    if (response.overlapV.x < 0) {
-                        this.goLeft();
-                    } else {
-                        this.goRight();
-                    }
-                } else {
-                    if (response.overlapV.y > 0) {
-                        this.goDown();
-                    } else {
-                        this.goUp();
-                    }
-                }
+                // this.powerDown();
+                // if ((Math.abs(response.overlapV.x) > Math.abs(response.overlapV.y)) &&
+                //     (other.body.vel.x !== 0 || other.onAirTime === 0)) {
+                //     if (response.overlapV.x < 0) {
+                //         this.goLeft();
+                //     } else {
+                //         this.goRight();
+                //     }
+                // } else {
+                //     if (response.overlapV.y > 0) {
+                //         this.goDown();
+                //     } else {
+                //         this.goUp();
+                //     }
+                // }
             }
         }
+
         return false;
     }
 });
