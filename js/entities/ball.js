@@ -120,7 +120,7 @@ game.BallEntity = me.Entity.extend({
             this.direction.y = y;
             this.lastDirectionChange = 0;
 
-            if(this.direction.y < 0 && !this.direction.x)
+            if (this.direction.y < 0 && !this.direction.x)
                 console.log('');
         }
     },
@@ -179,45 +179,49 @@ game.BallEntity = me.Entity.extend({
                     if (response.overlapV.y < 0) {
                         //if we're jumping but not powerjumping
                         if (other.body.jumping && !other.powerJumping) {
-                            //we stop the player
+                            // we stop the player
                             other.body.vel.y = 0;
                             other.body.jumping = false;
                             other.onAirTime = 0;
                             // accelerate ball downwards
                             this.accelerateUp();
                         } else if (!other.powerJumping) {
+                            //the ball goes up at normal speed
                             this.goUp();
                         }
                     } else {
-                        //if (other.body.vel.x !== 0 || other.onAirTime === 0) {
-                            if(!other.powerJumping && other.body.vel.y > 0) {
-                                other.body.vel.set(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -8);
-                                other.powerJumping = true;
-                                console.log('accel');
-
-                                this.accelerateDown();
-                            }
-                            else {
-                                this.goDown();
-                            }
-                        //}
-
+                        // if the player has no velocity
+                        if (!other.body.vel.y) {
+                            this.bounceDirection();
+                        } else if (!other.powerJumping && other.body.vel.y > 0) {
+                            // we jump
+                            other.body.vel.set(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -8);
+                            other.powerJumping = true;
+                            //we accelerate the ball downwards
+                            this.accelerateDown();
+                        }
+                        else {
+                            //the ball goes up at normal speed
+                            this.goDown();
+                        }
                     }
                 }
             }
         } else if (other.name === 'boar') {
             if (otherShapeIndex === 2) {
+                // we kill the boar
+                if (this.powerLevel == this.DECCELERATION_STEPS) {
+                    other.kill();
+                }
                 this.bounceDirection();
                 this.powerDown();
                 return true;
             }
         } else if (other.name === 'piglet') {
+            // rescue piglet
+            other.rescue();
             this.bounceDirection();
             this.powerDown();
-
-            //Rescue piglet
-            other.rescue();
-            return true;
         } else {
             this.bounceDirection();
             this.powerDown();
