@@ -119,9 +119,6 @@ game.BallEntity = me.Entity.extend({
             this.direction.x = x;
             this.direction.y = y;
             this.lastDirectionChange = 0;
-
-            if (this.direction.y < 0 && !this.direction.x)
-                console.log('');
         }
     },
 
