@@ -120,8 +120,12 @@ game.PlayerEntity = me.Entity.extend({
                 !this.knockbacked &&
                 (!this.body.falling ||
                  this.onAirTime < this.JUMP_MAX_AIRBONRNE_TIME)) {
+                //set velocity
                 this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
                 this.body.jumping = true;
+
+                //play audio
+                me.audio.playUnique('jump', 'action');
             }
         }
         this.onAirTime += dt;
@@ -138,6 +142,10 @@ game.PlayerEntity = me.Entity.extend({
         // enable kicking
         if (me.input.isKeyPressed('kick')) {
             if (!this.knockbacked) {
+                //play audio
+                if(!this.kicking)
+                    me.audio.playUnique('kick', 'action');
+
                 this.kick();
             }
         }
