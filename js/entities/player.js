@@ -188,8 +188,7 @@ game.PlayerEntity = me.Entity.extend({
         var relativeOverlapV = response.overlapV.clone().scale(this.name === response.a.name ? 1 : 0);
         // handling custom collision
         if (other.name === 'ball') {
-            // TODO if jumping ON ball, must `return true` to have a collision
-            return !this.powerJumping && this.body.jumping;
+            return !this.powerJumping; //!this.powerJumping && (this.body.jumping || this.body.falling);
         } else if (other.name === 'piglet') {
             other.rescue();
             return false;

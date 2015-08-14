@@ -31,8 +31,8 @@ game.BallEntity = me.Entity.extend({
 
         // define animations
         this.renderable.addAnimation('idle', [0, 1], 200);
-        this.renderable.addAnimation('jumpedOver', [2, 2], 100);
-        this.renderable.addAnimation('kicked', [5, 5], 100);
+        this.renderable.addAnimation('jumpedOver', [2, 2], 50);
+        this.renderable.addAnimation('kicked', [5, 5], 50);
         this.renderable.addAnimation('vAcceleration', [6, 7], 50);
         this.renderable.addAnimation('hAcceleration', [3, 4], 50);
         this.setCurrentAnimation('idle');
@@ -119,6 +119,9 @@ game.BallEntity = me.Entity.extend({
             this.direction.x = x;
             this.direction.y = y;
             this.lastDirectionChange = 0;
+
+            if(this.direction.y < 0 && !this.direction.x)
+                console.log('');
         }
     },
 
@@ -182,7 +185,7 @@ game.BallEntity = me.Entity.extend({
                             other.onAirTime = 0;
                             // accelerate ball downwards
                             this.accelerateUp();
-                        } else {
+                        } else if (!other.powerJumping) {
                             this.goUp();
                         }
                     } else {
