@@ -20,7 +20,6 @@ game.BallEntity = me.Entity.extend({
         this.powerLevel = 0;
         this.body.setVelocity(this.NORMAL_SPEED, this.NORMAL_SPEED);
         this.body.gravity = 0;
-        this.jumpedOver = false;
 
         // we always update the ball, ALWAYS
         this.alwaysUpdate = true;
@@ -32,8 +31,8 @@ game.BallEntity = me.Entity.extend({
 
         // define animations
         this.renderable.addAnimation('idle', [0, 1], 200);
-        this.renderable.addAnimation('jumpedOver', [2, 2], 50);
-        this.renderable.addAnimation('kicked', [5, 5], 50);
+        this.renderable.addAnimation('jumpedOver', [2, 2], 100);
+        this.renderable.addAnimation('kicked', [5, 5], 100);
         this.renderable.addAnimation('vAcceleration', [6, 7], 50);
         this.renderable.addAnimation('hAcceleration', [3, 4], 50);
         this.setCurrentAnimation('idle');
@@ -49,7 +48,11 @@ game.BallEntity = me.Entity.extend({
      * accelerates the ball
      */
     powerUp: function() {
-        this.setCurrentAnimation('kicked', 'hAcceleration');
+        if (this.direction.x) {
+            this.setCurrentAnimation('kicked', 'hAcceleration');
+        } else {
+            this.setCurrentAnimation('jumpedOver', 'vAcceleration');
+        }
 
         this.poweredUp = true;
         this.powerLevel = this.DECCELERATION_STEPS;
@@ -123,6 +126,16 @@ game.BallEntity = me.Entity.extend({
         this.go(-this.direction.x, -this.direction.y);
     },
 
+    accelerateUp: function() {
+        this.goUp();
+        this.powerUp();
+    },
+
+    accelerateDown: function() {
+        this.goDown();
+        this.powerUp();
+    },
+
     goUp: function() {
         this.go(0, -1);
     },
@@ -144,9 +157,6 @@ game.BallEntity = me.Entity.extend({
                                                               : response.indexShapeB;
 
         if (other.name === 'player') {
-            var playerShapeIndex = response.a.name === other.name ? response.indexShapeA
-                                                                  : response.indexShapeB;
-
             // if the player is hitting then we go horizontal
             if (other.kicking) {
                 this.powerUp();
@@ -157,21 +167,38 @@ game.BallEntity = me.Entity.extend({
                 }
             } else {
                 this.powerDown();
-                if ((Math.abs(response.overlapV.x) > Math.abs(response.overlapV.y)) &&
-                    (other.body.vel.x !== 0 || other.onAirTime === 0)) {
-                    if (response.overlapV.x < 0) {
-                        this.goLeft();
-                    } else {
-                        this.goRight();
-                    }
+                //if horizontal movement
+                if (Math.abs(response.overlapV.x) > Math.abs(response.overlapV.y)) {
+                    //we reverse direction
+                    this.bounceDirection();
                 } else {
-                    this.jumpedOver = true;
-                    this.setCurrentAnimation('jumpedOver', 'idle');
-
-                    if (response.overlapV.y > 0) {
-                        this.goDown();
+                    //if up movement
+                    if (response.overlapV.y < 0) {
+                        //if we're jumping but not powerjumping
+                        if (other.body.jumping && !other.powerJumping) {
+                            //we stop the player
+                            other.body.vel.y = 0;
+                            other.body.jumping = false;
+                            other.onAirTime = 0;
+                            // accelerate ball downwards
+                            this.accelerateUp();
+                        } else {
+                            this.goUp();
+                        }
                     } else {
-                        this.goUp();
+                        //if (other.body.vel.x !== 0 || other.onAirTime === 0) {
+                            if(!other.powerJumping && other.body.vel.y > 0) {
+                                other.body.vel.set(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -8);
+                                other.powerJumping = true;
+                                console.log('accel');
+
+                                this.accelerateDown();
+                            }
+                            else {
+                                this.goDown();
+                            }
+                        //}
+
                     }
                 }
             }

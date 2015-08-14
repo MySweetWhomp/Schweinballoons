@@ -31,6 +31,7 @@ game.PlayerEntity = me.Entity.extend({
         // setting initial direction
         this.direction = new me.Vector2d(1, 0);
         this.knockbacked = false;
+        this.powerJumping = false;
 
         // animations
         this.renderable.addAnimation('idle', [0, 1, 2], 150);
@@ -183,10 +184,12 @@ game.PlayerEntity = me.Entity.extend({
             return false;
         }
 
+        // computing independant overlap vector
+        var relativeOverlapV = response.overlapV.clone().scale(this.name === response.a.name ? 1 : 0);
         // handling custom collision
         if (other.name === 'ball') {
             // TODO if jumping ON ball, must `return true` to have a collision
-            return false;
+            return !this.powerJumping && this.body.jumping;
         } else if (other.name === 'piglet') {
             other.rescue();
             return false;
@@ -195,8 +198,6 @@ game.PlayerEntity = me.Entity.extend({
             if (otherShapeIndex === 0) {
                 return false;
             } else if (otherShapeIndex === 1) {
-                // computing independant overlap vector
-                var relativeOverlapV = response.overlapV.clone().scale(this.name === response.a.name ? 1 : 0);
                 // if we come from bottom
                 if (!this.knockbacked &&
                     !other.stunned &&
@@ -204,7 +205,7 @@ game.PlayerEntity = me.Entity.extend({
                     this.bottom - relativeOverlapV.y < other.top &&
                     this.body.vel.y > 0) {
                         // we bounce on the head
-                        this.body.vel = (new me.Vector2d(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -8));
+                        this.body.vel.set(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -8);
                         other.stun();
                 }
                 return !other.stunned && !this.knockbacked;
@@ -221,6 +222,7 @@ game.PlayerEntity = me.Entity.extend({
         else {
             // we're not knockbacked anymore
             this.knockbacked = false;
+            this.powerJumping = false;
         }
 
         // Make all other objects solid
