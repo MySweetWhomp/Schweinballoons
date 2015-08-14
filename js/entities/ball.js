@@ -167,14 +167,14 @@ game.BallEntity = me.Entity.extend({
                 }
             } else {
                 this.powerDown();
-                //if horizontal movement
+                // if horizontal movement
                 if (Math.abs(response.overlapV.x) > Math.abs(response.overlapV.y)) {
-                    //we reverse direction
+                    // we reverse direction
                     this.bounceDirection();
                 } else {
-                    //if up movement
+                    // if up movement
                     if (response.overlapV.y < 0) {
-                        //if we're jumping but not powerjumping
+                        // if we're jumping but not powerjumping
                         if (other.body.jumping && !other.powerJumping) {
                             // we stop the player
                             other.body.vel.y = 0;
@@ -183,7 +183,7 @@ game.BallEntity = me.Entity.extend({
                             // accelerate ball downwards
                             this.accelerateUp();
                         } else if (!other.powerJumping) {
-                            //the ball goes up at normal speed
+                            // the ball goes up at normal speed
                             this.goUp();
                         }
                     } else {
@@ -194,11 +194,11 @@ game.BallEntity = me.Entity.extend({
                             // we jump
                             other.body.vel.set(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -8);
                             other.powerJumping = true;
-                            //we accelerate the ball downwards
+                            // we accelerate the ball downwards
                             this.accelerateDown();
                         }
                         else {
-                            //the ball goes up at normal speed
+                            // the ball goes up at normal speed
                             this.goDown();
                         }
                     }
@@ -207,7 +207,7 @@ game.BallEntity = me.Entity.extend({
         } else if (other.name === 'boar') {
             if (otherShapeIndex === 2) {
                 // we kill the boar
-                if (this.powerLevel == this.DECCELERATION_STEPS) {
+                if (this.powerLevel === this.DECCELERATION_STEPS) {
                     other.kill();
                 }
                 this.bounceDirection();

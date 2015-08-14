@@ -143,7 +143,7 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         // update animation
-        if (!this.kicking){
+        if (!this.kicking) {
             if (this.knockbacked) {
                 this.setCurrentAnimation('stun');
             } else if (this.body.jumping) {

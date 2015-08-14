@@ -117,7 +117,7 @@ game.BoarEntity = me.Entity.extend({
                 this.setCurrentAnimation('stun');
                 this.body.vel = new me.Vector2d(0, 0);
             } else {
-                if (!this.renderable.isCurrentAnimation('turnAround')){
+                if (!this.renderable.isCurrentAnimation('turnAround')) {
                     this.setCurrentAnimation('walking');
                     this.body.vel.x += this.body.accel.x * me.timer.tick * this.direction.x;
                 }
