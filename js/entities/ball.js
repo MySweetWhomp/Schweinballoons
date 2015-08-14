@@ -209,10 +209,15 @@ game.BallEntity = me.Entity.extend({
             if (otherShapeIndex === 2) {
                 this.bounceDirection();
                 this.powerDown();
+                return true;
             }
         } else if (other.name === 'piglet') {
-            //TODO : ball shoots piglets
-            return false;
+            this.bounceDirection();
+            this.powerDown();
+
+            //Rescue piglet
+            other.rescue();
+            return true;
         } else {
             this.bounceDirection();
             this.powerDown();
