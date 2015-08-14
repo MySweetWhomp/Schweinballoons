@@ -19,7 +19,9 @@ var game = {
 
         // setting up sound
         me.audio.samplePlaying = null;
-        me.audio.samplePriority.action = ['kick', 'jump'];
+        me.audio.samplePriority = {
+            action: ['kick', 'jump']
+        };
         me.audio.playUnique = function(soundName, channel, loop) {
             // set to default channel
             channel = channel || 'default';
