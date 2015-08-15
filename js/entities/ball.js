@@ -236,8 +236,10 @@ game.BallEntity = me.Entity.extend({
                 // this.direction = this.lastNotCollidingDir.clone();
             }
 
-            if (this.powerLevel === this.DECCELERATION_STEPS) {
-                other.break();
+            if (other.name === 'block') {
+                if (this.powerLevel === this.DECCELERATION_STEPS) {
+                    other.break();
+                }
             }
 
             this.bounceDirection();
