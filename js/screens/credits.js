@@ -43,7 +43,7 @@
                 ['SCHWEINBALLON', '', 'A GAME FOR', 'GBJAM #4'],
                 ['GAME DESIGN', ' ', 'MATTHIEU GODET', 'PAUL JOANNON'],
                 ['2D ART', ' ', 'MATTHIEU GODET'],
-                ['MUSIC AND SOUNDS', ' ', 'DJ PIE'],
+                ['MUSIC & SOUNDS', ' ', 'DJ PIE'],
                 ['PROGRAMMATION', ' ', 'PAUL JOANNON', 'MATTHIEU VIENOT'],
                 ['THANKS FOR PLAYING', '', '-', '', 'MERCI D\'AVOIR JOUE']
             ];
