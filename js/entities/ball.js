@@ -6,6 +6,9 @@ game.BallEntity = me.Entity.extend({
      * constructor
      */
     init: function (x, y, settings) {
+        settings.image = 'ball';
+        settings.framewidth = 20;
+        settings.frameheight = 20;
         // call the constructor
         this._super(me.Entity, 'init', [x, y , settings]);
         this.name = 'ball';

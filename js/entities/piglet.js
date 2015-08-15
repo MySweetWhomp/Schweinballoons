@@ -7,9 +7,14 @@ game.PigletEntity = me.Entity.extend({
      * constructor
      */
     init:function (x, y, settings) {
+        settings.image = 'piglet';
+        settings.framewidth = 26;
+        settings.frameheight = 32;
         // call the constructor
         this._super(me.Entity, 'init', [x, y , settings]);
         this.name = 'piglet';
+
+        this.renderable.translate(0, -8);
 
         // we set the velocity of the player's body
         this.body.setVelocity(0, 0);

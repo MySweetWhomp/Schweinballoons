@@ -7,6 +7,9 @@ game.PlayerEntity = me.Entity.extend({
      * constructor
      */
     init:function (x, y, settings) {
+        settings.image = 'pig';
+        settings.framewidth = 40;
+        settings.frameheight = 40;
         // call the constructor
         this._super(me.Entity, 'init', [x, y , settings]);
         this.name = 'player';
