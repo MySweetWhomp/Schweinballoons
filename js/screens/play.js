@@ -25,5 +25,6 @@ game.PlayScreen = me.ScreenObject.extend({
     onDestroyEvent: function() {
         // remove the HUD from the game world
         me.game.world.removeChild(this.HUD);
+        me.game.world.removeChild(this.pause);
     }
 });
