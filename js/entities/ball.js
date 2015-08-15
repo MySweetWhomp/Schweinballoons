@@ -43,6 +43,8 @@ game.BallEntity = me.Entity.extend({
         this.isColliding = false;
         this.lastNotCollidingPos = this.pos.clone();
         this.lastNotCollidingDir = this.direction.clone();
+
+        this.carried = false;
     },
 
     setCurrentAnimation: function(name, onComplete) {
@@ -84,6 +86,14 @@ game.BallEntity = me.Entity.extend({
      * update the entity
      */
     update: function(dt) {
+        if (this.carried) {
+            var alpha = this.renderable.alpha;
+            this.renderable.alpha = 0;
+            return false;
+        } else {
+            this.renderable.alpha = 1;
+        }
+
         if (this.direction.x !== 0 && this.direction.y !== 0) {
             this.direction.y = 0;
         }
@@ -170,12 +180,19 @@ game.BallEntity = me.Entity.extend({
     },
 
     onCollision: function(response, other) {
+        if (this.carried) { return false; }
+
         var otherShapeIndex = response.a.name === other.name ? response.indexShapeA
-                                                              : response.indexShapeB;
+                                                             : response.indexShapeB;
 
         this.isColliding = true;
 
         if (other.name === 'player') {
+            if (me.input.keyStatus('kick') && !other.kicking) {
+                other.carrying = true;
+                this.carried = true;
+                return false;
+            }
             // if the player is hitting then we go horizontal
             if (other.kicking) {
                 this.powerUp();

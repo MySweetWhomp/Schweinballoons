@@ -42,6 +42,8 @@ game.PlayerEntity = me.Entity.extend({
         this.knockbacked = false;
         this.powerJumping = false;
 
+        this.carrying = false;
+
         // animations
         this.renderable.addAnimation('idle', [0, 1, 2], 150);
         this.renderable.addAnimation('walk', [3, 4, 5, 6, 7, 8], 100);
@@ -52,6 +54,14 @@ game.PlayerEntity = me.Entity.extend({
         this.renderable.addAnimation('stun', [23, 24, 23, 24, 23, 24], 50); // Must blink
         this.renderable.addAnimation('win', [25, 26, 27, 26, 25, 26, 27, 26,
                                              25, 26, 27, 26, 25, 26, 27, 26], 120);
+        this.renderable.addAnimation('idle-carry', [28, 29, 30], 150);
+        this.renderable.addAnimation('walk-carry', [31, 32, 33, 34, 35, 36], 100);
+        this.renderable.addAnimation('run-carry', [37, 38, 39, 40, 41, 42], 50);
+        this.renderable.addAnimation('jump-carry', [43, 44], 50);
+        this.renderable.addAnimation('fall-carry', [46, 47], 50);
+        this.renderable.addAnimation('h-drop', [20, 20], 50);
+        this.renderable.addAnimation('v-drop', [48, 48], 50);
+
         this.setCurrentAnimation('idle');
     },
 
@@ -68,9 +78,6 @@ game.PlayerEntity = me.Entity.extend({
         }
     },
 
-    /**
-     * knocks the player back
-     */
      knockback: function (strength, direction) {
          // set state as currently knockbacked
          this.knockbacked = true;
@@ -81,11 +88,11 @@ game.PlayerEntity = me.Entity.extend({
 
         // change the velocity
         this.body.vel = new me.Vector2d(-strength * 20 * direction.x, -strength);
+
+        // drop the ball
+        this.dropTheBall();
     },
 
-    /**
-     * kick
-     */
     kick: function() {
         if (!this.kicking) {
             this.kicking = true;
@@ -98,9 +105,6 @@ game.PlayerEntity = me.Entity.extend({
         }
     },
 
-    /**
-     * hit
-     */
      hit: function() {
         this.renderable.flicker(this.FLICKERING_TIME);
      },
@@ -129,6 +133,12 @@ game.PlayerEntity = me.Entity.extend({
                 } else {
                     this.body.vel.x = 0;
                 }
+            } else if (this.carrying) {
+                this.dropTheBall();
+            }
+
+            if (this.carrying && !me.input.keyStatus('kick')) {
+                this.dropTheBall();
             }
 
             // handling jump
@@ -180,19 +190,24 @@ game.PlayerEntity = me.Entity.extend({
                 if (this.knockbacked) {
                     this.setCurrentAnimation('stun');
                 } else if (this.body.jumping) {
-                    this.setCurrentAnimation('jump');
+                    this.setCurrentAnimation(this.getAnimationName('jump'));
                 } else if (this.body.falling) {
-                    this.setCurrentAnimation('fall');
+                    this.setCurrentAnimation(this.getAnimationName('fall'));
                 } else if (this.body.vel.x !== 0) {
-                    this.setCurrentAnimation(me.input.keyStatus('kick') ? 'run' : 'walk');
+                    this.setCurrentAnimation(
+                        this.getAnimationName(me.input.keyStatus('kick') ? 'run' : 'walk')
+                    );
                 } else {
-                    this.setCurrentAnimation('idle');
+                    this.setCurrentAnimation(this.getAnimationName('idle'));
                 }
             } else {
-                this.setCurrentAnimation('kick', (function() {
-                    this.kicking = false;
-                    this.body.removeShapeAt(1);
-                }).bind(this));
+                if (!this.renderable.isCurrentAnimation('v-drop') &&
+                    !this.renderable.isCurrentAnimation('h-drop')) {
+                    this.setCurrentAnimation('kick', (function() {
+                        this.kicking = false;
+                        this.body.removeShapeAt(1);
+                    }).bind(this));
+                }
             }
         }
 
@@ -208,6 +223,39 @@ game.PlayerEntity = me.Entity.extend({
                 this.body.vel.y !== 0);
     },
 
+    getAnimationName: function(name) {
+        return name + (this.carrying ? '-carry' : '');
+    },
+
+    dropTheBall: function() {
+        var ball = me.game.world.getChildByName('ball')[0];
+        ball.carried = false;
+        ball.powerUp();
+
+        var dir = 'v';
+        if (me.input.isKeyPressed('left') || me.input.isKeyPressed('right')) {
+            dir = 'h';
+            if (me.input.isKeyPressed('left')) {
+                ball.pos.set(this.left - ball.body.width, this.top);
+                ball.goLeft();
+            } else {
+                ball.pos.set(this.right, this.top);
+                ball.goRight();
+            }
+        } else {
+            ball.pos.set(this.left, this.top - ball.body.height);
+            ball.goUp();
+        }
+
+        this.kicking = true;
+        this.setCurrentAnimation(dir + '-drop', function() {
+            this.kicking = false;
+            this.setCurrentAnimation('idle');
+        }.bind(this));
+
+        this.carrying = false;
+    },
+
    /**
      * colision handler
      * (called when colliding with other objects)
@@ -216,7 +264,7 @@ game.PlayerEntity = me.Entity.extend({
         var myShapeIndex = response.a.name === this.name ? response.indexShapeA
                                                          : response.indexShapeB;
         var otherShapeIndex = response.a.name === other.name ? response.indexShapeA
-                                                              : response.indexShapeB;
+                                                             : response.indexShapeB;
 
         // kick collision shape must not be solid
         if (myShapeIndex > 0) {
@@ -227,7 +275,8 @@ game.PlayerEntity = me.Entity.extend({
         var relativeOverlapV = response.overlapV.clone().scale(this.name === response.a.name ? 1 : 0);
         // handling custom collision
         if (other.name === 'ball') {
-            return !this.powerJumping; //!this.powerJumping && (this.body.jumping || this.body.falling);
+            if (other.carried) { return false; }
+            return !this.powerJumping;
         } else if (other.name === 'piglet') {
             other.rescue();
             return false;
