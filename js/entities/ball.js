@@ -36,6 +36,10 @@ game.BallEntity = me.Entity.extend({
         this.renderable.addAnimation('vAcceleration', [6, 7], 50);
         this.renderable.addAnimation('hAcceleration', [3, 4], 50);
         this.setCurrentAnimation('idle');
+
+        this.isColliding = false;
+        this.lastNotCollidingPos = this.pos.clone();
+        this.lastNotCollidingDir = this.direction.clone();
     },
 
     setCurrentAnimation: function(name, onComplete) {
@@ -108,7 +112,14 @@ game.BallEntity = me.Entity.extend({
             }
         }
 
+        if (!this.isColliding) {
+            this.lastNotCollidingPos = this.pos.clone();
+            this.lastNotCollidingDir = this.direction.clone();
+        }
+
         this.lastDirectionChange += dt;
+        this.isColliding = false;
+
         return (this._super(me.Entity, 'update', [dt]) ||
                 this.body.vel.x !== 0 ||
                 this.body.vel.y !== 0);
@@ -155,6 +166,8 @@ game.BallEntity = me.Entity.extend({
     onCollision: function(response, other) {
         var otherShapeIndex = response.a.name === other.name ? response.indexShapeA
                                                               : response.indexShapeB;
+
+        this.isColliding = true;
 
         if (other.name === 'player') {
             // if the player is hitting then we go horizontal
@@ -216,6 +229,10 @@ game.BallEntity = me.Entity.extend({
             }
         } else if (other.name === 'piglet') {
         } else {
+            if (response.overlap >= this.body.width / 2) {
+                this.pos = this.lastNotCollidingPos.clone();
+                this.direction = this.lastNotCollidingDir.clone();
+            }
             this.bounceDirection();
             this.powerDown();
         }
