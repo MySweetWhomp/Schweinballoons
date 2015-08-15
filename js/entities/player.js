@@ -16,9 +16,8 @@ game.PlayerEntity = me.Entity.extend({
 
         // viewport must follow the player
         this.center = this.pos.clone()
-                              .add(this.body.pos)
-                              .add(new me.Vector2d(this.body.width / 2,
-                                                   this.body.height / 2));
+                              .add(new me.Vector2d(this.width / 2,
+                                                   this.height / 2));
         me.game.viewport.follow(this.center, me.game.viewport.AXIS.BOTH);
 
         // we set the velocity of the player's body
@@ -177,9 +176,8 @@ game.PlayerEntity = me.Entity.extend({
 
         // Compute the center
         var center = this.pos.clone()
-                            .add(this.body.pos)
-                            .add(new me.Vector2d(this.body.width / 2,
-                                                 this.body.height / 2));
+                            .add(new me.Vector2d(this.width / 2,
+                                                 this.height / 2));
         this.center.set(center.x, center.y);
 
         // return true if we moved or if the renderable was updated
