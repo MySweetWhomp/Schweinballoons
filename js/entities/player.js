@@ -170,8 +170,9 @@ game.PlayerEntity = me.Entity.extend({
 
         if (game.data.won) {
             this.setCurrentAnimation('win', function() {
+                this.setCurrentAnimation('win');
                 game.nextLevel();
-            });
+            }.bind(this));
             this.body.vel.x = 0;
         } else {
             // update animation

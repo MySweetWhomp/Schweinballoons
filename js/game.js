@@ -103,7 +103,5 @@ var game = {
     nextLevel: function() {
         // TODO load next level
         me.state.change(me.state.PLAY);
-        me.input.paused = false;
-        this.data.won = false;
     }
 };
