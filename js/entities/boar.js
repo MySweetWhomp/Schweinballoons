@@ -85,9 +85,6 @@ game.BoarEntity = me.Entity.extend({
             this.turnAround();
         }
 
-        if (me.input.isKeyPressed('debug'))
-            this.kill();
-
         // if the entity is dying
         if (this.dying) {
             // set animation
