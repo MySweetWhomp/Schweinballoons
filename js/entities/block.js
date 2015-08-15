@@ -7,6 +7,8 @@ game.BlockEntity = me.Entity.extend({
      * constructor
      */
     init:function (x, y, settings) {
+        settings.image = 'block';
+
         // call the constructor
         this._super(me.Entity, 'init', [x, y , settings]);
         this.name = 'block';
