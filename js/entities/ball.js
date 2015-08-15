@@ -238,7 +238,7 @@ game.BallEntity = me.Entity.extend({
         } else {
             if (response.overlap >= this.body.width / 2) {
                 this.pos = this.lastNotCollidingPos.clone();
-                this.direction = this.lastNotCollidingDir.clone();
+                // this.direction = this.lastNotCollidingDir.clone();
             }
             this.bounceDirection();
             this.powerDown();
