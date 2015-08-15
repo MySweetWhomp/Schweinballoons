@@ -75,6 +75,7 @@ var game = {
         me.pool.register('ball', game.BallEntity);
         me.pool.register('piglet', game.PigletEntity);
         me.pool.register('boar', game.BoarEntity);
+        me.pool.register('block', game.BlockEntity);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, 'left');

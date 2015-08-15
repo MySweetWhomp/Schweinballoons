@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="17" tilewidth="16" tileheight="16" nextobjectid="48">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="17" tilewidth="16" tileheight="16" nextobjectid="68">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="18">
   <image source="../img/tileset.png" width="96" height="48"/>
  </tileset>
@@ -73,6 +73,34 @@
     <property name="frameheight" value="40"/>
     <property name="framewidth" value="40"/>
     <property name="image" value="boar"/>
+   </properties>
+  </object>
+  <object id="64" name="block" x="240" y="208" width="16" height="16">
+   <properties>
+    <property name="frameheight" value="16"/>
+    <property name="framewidth" value="16"/>
+    <property name="image" value="block"/>
+   </properties>
+  </object>
+  <object id="65" name="block" x="240" y="176" width="16" height="16">
+   <properties>
+    <property name="frameheight" value="16"/>
+    <property name="framewidth" value="16"/>
+    <property name="image" value="block"/>
+   </properties>
+  </object>
+  <object id="66" name="block" x="240" y="192" width="16" height="16">
+   <properties>
+    <property name="frameheight" value="16"/>
+    <property name="framewidth" value="16"/>
+    <property name="image" value="block"/>
+   </properties>
+  </object>
+  <object id="67" name="block" x="240" y="224" width="16" height="16">
+   <properties>
+    <property name="frameheight" value="16"/>
+    <property name="framewidth" value="16"/>
+    <property name="image" value="block"/>
    </properties>
   </object>
  </objectgroup>

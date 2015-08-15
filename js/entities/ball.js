@@ -227,6 +227,10 @@ game.BallEntity = me.Entity.extend({
                 this.powerDown();
                 return true;
             }
+        } else if (other.name === 'block') {
+            if (this.powerLevel === this.DECCELERATION_STEPS) {
+                other.break();
+            }
         } else if (other.name === 'piglet') {
         } else {
             if (response.overlap >= this.body.width / 2) {
