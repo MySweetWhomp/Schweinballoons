@@ -20,7 +20,7 @@ game.HUD.Container = me.Container.extend({
         this.floating = true;
 
         // make sure our object always draws first
-        this.z = Infinity;
+        this.z = 90;
 
         // add all piglets
         this.maxPiglets = me.game.world.getChildByName("piglet").length;

@@ -81,18 +81,40 @@ var game = {
         me.input.bindKey(me.input.KEY.RIGHT, 'right');
         me.input.bindKey(me.input.KEY.UP, 'jump', true);
         me.input.bindKey(me.input.KEY.A, 'kick', true);
+        me.input.bindKey(me.input.KEY.SPACE, 'pause', true);
         // added for debug purposes
         me.input.bindKey(me.input.KEY.E, 'debug', true);
 
         // sets global gravity
         me.sys.gravity = 0.7;
 
+        this.paused = false;
         me.input.paused = false;
 
-        me.state.transition('fade', '#ccff99', 350);
+        me.state.transition('fade', 'rgb(215, 232, 148)', 350);
+
+        me.state.onResume = function() {
+            if (game.isPaused()) {
+                game.pause();
+            }
+        };
 
         // starts the game.
         me.state.change(me.state.PLAY);
+    },
+
+    pause: function() {
+        this.paused = true;
+        me.state.pause();
+    },
+
+    resume: function() {
+        this.paused = false;
+        me.state.resume();
+    },
+
+    isPaused: function() {
+        return this.paused;
     },
 
     win: function() {

@@ -11,7 +11,9 @@ game.PlayScreen = me.ScreenObject.extend({
 
         // add our HUD to the game world
         this.HUD = new game.HUD.Container();
+        this.pause = new game.Pause.Container();
         me.game.world.addChild(this.HUD);
+        me.game.world.addChild(this.pause);
 
         game.data.won = false;
         me.input.paused = false;
