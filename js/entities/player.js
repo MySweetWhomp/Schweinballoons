@@ -24,7 +24,10 @@ game.PlayerEntity = me.Entity.extend({
         me.game.viewport.follow(this.center, me.game.viewport.AXIS.BOTH);
 
         // we set the velocity of the player's body
-        this.body.setVelocity(2, 9);
+        this.WALK_SPEED = 2;
+        this.RUN_SPEED = 3;
+        this.VERTICAL_SPEED = 9;
+        this.body.setVelocity(this.WALK_SPEED, this.VERTICAL_SPEED);
 
         // we always update the player, ALWAYS
         this.alwaysUpdate = true;
@@ -106,6 +109,11 @@ game.PlayerEntity = me.Entity.extend({
      */
     update : function (dt) {
         // handling movement on the side
+        if (me.input.keyStatus('kick') && !this.kicking) {
+            this.body.setVelocity(this.RUN_SPEED, this.VERTICAL_SPEED);
+        } else {
+            this.body.setVelocity(this.WALK_SPEED, this.VERTICAL_SPEED);
+        }
         if (!this.knockbacked) {
             if (me.input.isKeyPressed('left')) {
                 this.flipX(true);
@@ -165,7 +173,7 @@ game.PlayerEntity = me.Entity.extend({
             } else if (this.body.falling) {
                 this.setCurrentAnimation('fall');
             } else if (this.body.vel.x !== 0) {
-                this.setCurrentAnimation('walk');
+                this.setCurrentAnimation(me.input.keyStatus('kick') ? 'run' : 'walk');
             } else {
                 this.setCurrentAnimation('idle');
             }

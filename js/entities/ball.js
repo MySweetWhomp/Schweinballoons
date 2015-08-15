@@ -212,8 +212,7 @@ game.BallEntity = me.Entity.extend({
                             other.powerJumping = true;
                             // we accelerate the ball downwards
                             this.accelerateDown();
-                        }
-                        else {
+                        } else {
                             // the ball goes up at normal speed
                             this.goDown();
                         }
