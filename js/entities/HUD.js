@@ -26,7 +26,6 @@ game.HUD.Container = me.Container.extend({
         this.maxPiglets = me.game.world.getChildByName("piglet").length;
         this.piglets = this.maxPiglets;
 
-        this.addChild(new me.Sprite(0, 0, {image: "HUDback"}));
         for (var i = this.maxPiglets - 1; i >= 0; --i) {
           this.addChild(new game.HUD.PigletItem(1 + ((9 + 1) * i) , 1));
         }
