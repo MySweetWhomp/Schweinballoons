@@ -230,19 +230,20 @@ game.BallEntity = me.Entity.extend({
                 this.powerDown();
                 return true;
             }
-        } else if (other.name === 'block') {
-            if (this.powerLevel === this.DECCELERATION_STEPS) {
-                other.break();
-            }
-        } else if (other.name === 'piglet') {
-        } else {
+        } else if (other.name !== 'piglet'){
             if (response.overlap >= this.body.width / 2) {
                 this.pos = this.lastNotCollidingPos.clone();
                 // this.direction = this.lastNotCollidingDir.clone();
             }
+
+            if (this.powerLevel === this.DECCELERATION_STEPS) {
+                other.break();
+            }
+
             this.bounceDirection();
             this.powerDown();
         }
+
         return false;
     }
 });
