@@ -54,6 +54,8 @@ var game = {
             }
         };
 
+        me.state.set(me.state.LOADING, new game.LoadingScreen());
+
         // Set a callback to run when loading is complete.
         me.loader.onload = this.loaded.bind(this);
 

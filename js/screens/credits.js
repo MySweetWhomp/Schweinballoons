@@ -9,7 +9,7 @@
             this.font = font;
             this.text = [];
             var basePosX = me.game.viewport.width / 2,
-                fontHeight = font.measureText(' ').height
+                fontHeight = font.measureText(' ').height,
                 basePosY = (me.game.viewport.height / 2) - ((text.length * fontHeight) / 2);
             for (var i = 0; i < text.length; ++i) {
                 this.text.push({
@@ -89,7 +89,7 @@
 
     game.CreditsScreen = me.ScreenObject.extend({
         onResetEvent: function() {
-            this.background = new me.ColorLayer('black', 'rgb(215, 232, 148)', 1);
+            this.background = new me.ColorLayer('background', 'rgb(215, 232, 148)', 1);
             this.credits = new CreditsContainer();
             me.game.world.addChild(this.background);
             me.game.world.addChild(this.credits);

@@ -13,7 +13,7 @@ game.Pause.Container = me.Container.extend({
         this.alpha = 0;
         this.updateWhenPaused = true;
 
-        this.addChild(new me.ColorLayer('black', 'rgb(215, 232, 148)', 95));
+        this.addChild(new me.ColorLayer('background', 'rgb(215, 232, 148)', 95));
         this.font = new me.BitmapFont('font', { x : 8 , y : 8 }, 1);
         this.message = 'PAUSE';
         var messageSize = this.font.measureText(me.video.renderer, this.message);
