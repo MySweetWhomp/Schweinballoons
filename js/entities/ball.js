@@ -36,8 +36,8 @@ game.BallEntity = me.Entity.extend({
         this.renderable.addAnimation('idle', [0, 1], 200);
         this.renderable.addAnimation('jumpedOver', [2, 2], 50);
         this.renderable.addAnimation('kicked', [5, 5], 50);
-        this.renderable.addAnimation('vAcceleration', [6, 7], 50);
-        this.renderable.addAnimation('hAcceleration', [3, 4], 50);
+        this.renderable.addAnimation('vAcceleration', [3, 4], 50);
+        this.renderable.addAnimation('hAcceleration', [6, 7], 50);
         this.setCurrentAnimation('idle');
 
         this.isColliding = false;
