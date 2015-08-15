@@ -50,7 +50,8 @@ game.PlayerEntity = me.Entity.extend({
         this.renderable.addAnimation('fall', [18, 19], 50);
         this.renderable.addAnimation('kick', [20, 21, 21, 21], 50);
         this.renderable.addAnimation('stun', [23, 24, 23, 24, 23, 24], 50); // Must blink
-        this.renderable.addAnimation('win', [25, 26, 27, 26], 120);
+        this.renderable.addAnimation('win', [25, 26, 27, 26, 25, 26, 27, 26,
+                                             25, 26, 27, 26, 25, 26, 27, 26], 120);
         this.setCurrentAnimation('idle');
     },
 
@@ -114,34 +115,48 @@ game.PlayerEntity = me.Entity.extend({
         } else {
             this.body.setVelocity(this.WALK_SPEED, this.VERTICAL_SPEED);
         }
-        if (!this.knockbacked) {
-            if (me.input.isKeyPressed('left')) {
-                this.flipX(true);
-                this.body.vel.x -= this.body.accel.x * me.timer.tick;
-                this.direction = new me.Vector2d(-1, 0);
-            } else if (me.input.isKeyPressed('right')) {
-                this.flipX(false);
-                this.body.vel.x += this.body.accel.x * me.timer.tick;
-                this.direction = new me.Vector2d(1, 0);
-            } else {
-                this.body.vel.x = 0;
+
+        if (!me.input.paused) {
+            if (!this.knockbacked) {
+                if (me.input.isKeyPressed('left')) {
+                    this.flipX(true);
+                    this.body.vel.x -= this.body.accel.x * me.timer.tick;
+                    this.direction = new me.Vector2d(-1, 0);
+                } else if (me.input.isKeyPressed('right')) {
+                    this.flipX(false);
+                    this.body.vel.x += this.body.accel.x * me.timer.tick;
+                    this.direction = new me.Vector2d(1, 0);
+                } else {
+                    this.body.vel.x = 0;
+                }
+            }
+
+            // handling jump
+            if (me.input.isKeyPressed('jump')) {
+                if (!this.body.jumping &&
+                    !this.knockbacked &&
+                    (!this.body.falling ||
+                     this.onAirTime < this.JUMP_MAX_AIRBONRNE_TIME)) {
+                    //set velocity
+                    this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
+                    this.body.jumping = true;
+
+                    //play audio
+                    me.audio.playUnique('jump', 'action');
+                }
+            }
+
+            if (me.input.isKeyPressed('kick')) {
+                if (!this.knockbacked) {
+                    //play audio
+                    if(!this.kicking)
+                        me.audio.playUnique('kick', 'action');
+
+                    this.kick();
+                }
             }
         }
 
-        // handling jump
-        if (me.input.isKeyPressed('jump')) {
-            if (!this.body.jumping &&
-                !this.knockbacked &&
-                (!this.body.falling ||
-                 this.onAirTime < this.JUMP_MAX_AIRBONRNE_TIME)) {
-                //set velocity
-                this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
-                this.body.jumping = true;
-
-                //play audio
-                me.audio.playUnique('jump', 'action');
-            }
-        }
         this.onAirTime += dt;
         if (!this.body.falling && !this.body.jumping) {
             this.onAirTime = 0;
@@ -153,36 +168,31 @@ game.PlayerEntity = me.Entity.extend({
         // handle collisions against other shapes
         me.collision.check(this);
 
-        // enable kicking
-        if (me.input.isKeyPressed('kick')) {
-            if (!this.knockbacked) {
-                //play audio
-                if(!this.kicking)
-                    me.audio.playUnique('kick', 'action');
-
-                this.kick();
-            }
-        }
-
-        // update animation
-        if (!this.kicking) {
-            if (this.knockbacked) {
-                this.setCurrentAnimation('stun');
-            } else if (this.body.jumping) {
-                this.setCurrentAnimation('jump');
-            } else if (this.body.falling) {
-                this.setCurrentAnimation('fall');
-            } else if (this.body.vel.x !== 0) {
-                this.setCurrentAnimation(me.input.keyStatus('kick') ? 'run' : 'walk');
+        if (game.data.won) {
+            this.setCurrentAnimation('win', function() {
+                game.nextLevel();
+            });
+            this.body.vel.x = 0;
+        } else {
+            // update animation
+            if (!this.kicking) {
+                if (this.knockbacked) {
+                    this.setCurrentAnimation('stun');
+                } else if (this.body.jumping) {
+                    this.setCurrentAnimation('jump');
+                } else if (this.body.falling) {
+                    this.setCurrentAnimation('fall');
+                } else if (this.body.vel.x !== 0) {
+                    this.setCurrentAnimation(me.input.keyStatus('kick') ? 'run' : 'walk');
+                } else {
+                    this.setCurrentAnimation('idle');
+                }
             } else {
-                this.setCurrentAnimation('idle');
+                this.setCurrentAnimation('kick', (function() {
+                    this.kicking = false;
+                    this.body.removeShapeAt(1);
+                }).bind(this));
             }
-        }
-        else {
-            this.setCurrentAnimation('kick', (function() {
-                this.kicking = false;
-                this.body.removeShapeAt(1);
-            }).bind(this));
         }
 
         // Compute the center

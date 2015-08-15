@@ -48,9 +48,8 @@ game.HUD.Container = me.Container.extend({
 
         // if no more piglets
         if (this.piglets <= 0) {
-          // A WINNER IS YOU
-          // TODO : winning screen
-          console.log("win");
+            // A WINNER IS YOU
+            game.win();
         }
     }
 });

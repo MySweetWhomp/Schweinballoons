@@ -3,7 +3,7 @@
 var game = {
 
     // an object where to store game information
-    data : { },
+    data : { won : false },
 
     // Run on page load.
     onload : function () {
@@ -19,9 +19,8 @@ var game = {
 
         // setting up sound
         me.audio.samplePlaying = null;
-        me.audio.samplePriority = {
-            action: ['kick', 'jump']
-        };
+        me.audio.samplePriority = { action: ['kick', 'jump'] };
+
         me.audio.playUnique = function(soundName, channel, loop) {
             // set to default channel
             channel = channel || 'default';
@@ -53,7 +52,7 @@ var game = {
             } else {
                 return null;
             }
-        }
+        };
 
         // Set a callback to run when loading is complete.
         me.loader.onload = this.loaded.bind(this);
@@ -88,7 +87,23 @@ var game = {
         // sets global gravity
         me.sys.gravity = 0.7;
 
+        me.input.paused = false;
+
+        me.state.transition('fade', '#ccff99', 350);
+
         // starts the game.
         me.state.change(me.state.PLAY);
+    },
+
+    win: function() {
+        me.input.paused = true;
+        this.data.won = true;
+    },
+
+    nextLevel: function() {
+        // TODO load next level
+        me.state.change(me.state.PLAY);
+        me.input.paused = false;
+        this.data.won = false;
     }
 };
