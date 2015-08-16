@@ -30,7 +30,7 @@
                 me.input.isKeyPressed('jump') ||
                 me.input.isKeyPressed('pause')) {
                     ret = true;
-                    me.state.change(me.state.GAME_START);
+                    me.state.change(me.state.PLAY);
                 }
 
             return ret;
@@ -59,6 +59,8 @@
             me.game.world.addChild(this.backgroundColor);
             me.game.world.addChild(this.background);
             me.game.world.addChild(this.text);
+
+            me.state.transition('fade', 'rgb(215, 232, 148)', 350);
         },
 
         /**
