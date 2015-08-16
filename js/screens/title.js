@@ -30,7 +30,7 @@
                 me.input.isKeyPressed('jump') ||
                 me.input.isKeyPressed('pause')) {
                     ret = true;
-                    me.state.change(me.state.PLAY);
+                    me.state.change(me.state.GAME_START);
                 }
 
             return ret;

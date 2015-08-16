@@ -71,6 +71,8 @@ var game = {
         me.state.set(me.state.MENU, new game.TitleScreen());
         me.state.set(me.state.PLAY, new game.PlayScreen());
         me.state.set(me.state.CREDITS, new game.CreditsScreen());
+        me.state.GAME_START = me.state.USER + 1;
+        me.state.set(me.state.GAME_START, new game.IntroScreen());
 
         // add our player entity in the entity pool
         me.pool.register('player', game.PlayerEntity);
@@ -104,7 +106,7 @@ var game = {
         };
 
         // starts the game.
-        me.state.change(me.state.MENU);
+        me.state.change(me.state.GAME_START);
     },
 
     pause: function() {

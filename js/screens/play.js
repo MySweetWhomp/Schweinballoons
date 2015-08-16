@@ -17,6 +17,8 @@ game.PlayScreen = me.ScreenObject.extend({
 
         game.data.won = false;
         me.input.paused = false;
+
+        me.state.transition('fade', 'rgb(215, 232, 148)', 350);
     },
 
     /**
