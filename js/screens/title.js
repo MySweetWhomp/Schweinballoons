@@ -50,10 +50,13 @@
          *  action to perform on state change
          */
         onResetEvent: function() {
+            this.backgroundColor = new me.ColorLayer('background', 'rgb(215, 232, 148)', 1);
             this.background = new me.ImageLayer(0, -8, {
                 image : 'Title'
             });
+            this.background.z = 2;
             this.text = new TextContainer();
+            me.game.world.addChild(this.backgroundColor);
             me.game.world.addChild(this.background);
             me.game.world.addChild(this.text);
         },
@@ -62,6 +65,7 @@
          *  action to perform when leaving this screen (state change)
          */
         onDestroyEvent: function() {
+            me.game.world.removeChild(this.backgroundColor);
             me.game.world.removeChild(this.background);
             me.game.world.removeChild(this.text);
         }

@@ -239,7 +239,7 @@
         nextScreen: function(fadeColor) {
             if (this.currentScreen >= this.lastScreen) {
                 me.state.transition('fade', fadeColor, 350);
-                me.state.change(me.state.PLAY);
+                me.state.change(me.state.MENU);
             } else {
                 me.game.viewport.fadeIn(fadeColor, 350, function() {
                     me.game.viewport.fadeOut(fadeColor, 350);
