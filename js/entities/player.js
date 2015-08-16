@@ -248,7 +248,7 @@ game.PlayerEntity = me.Entity.extend({
             }
             ball.pos.set(
                 this.left + (this.width / 2) - (ball.width / 2) + ((this.width) * vector.x),
-                this.top
+                this.top + (this.height / 2) - (ball.height / 2)
             );
             ball.go(vector.x, vector.y);
         }
