@@ -88,7 +88,6 @@ game.DoorEntity = me.Entity.extend({
         //set timeout to close the door
         if(this.closingTimeout == null) {
             this.closingTimeout = me.timer.setTimeout((function() {
-                console.log('ke')
                 this.deactivateChannel(this.channel);
                 this.close();
                 this.closingTimeout = null;
