@@ -232,19 +232,23 @@ game.PlayerEntity = me.Entity.extend({
         ball.carried = false;
         ball.powerUp();
 
-        var dir = 'v';
-        if (me.input.isKeyPressed('left') || me.input.isKeyPressed('right')) {
-            dir = 'h';
-            if (me.input.isKeyPressed('left')) {
-                ball.pos.set(this.left - ball.body.width, this.top);
-                ball.goLeft();
-            } else {
-                ball.pos.set(this.right, this.top);
-                ball.goRight();
-            }
-        } else {
+        var dir = 'h';
+        if (me.input.isKeyPressed('up')) {
+            dir = 'v';
             ball.pos.set(this.left, this.top - ball.body.height);
             ball.goUp();
+        } else {
+            var vector = this.direction.clone();
+            if (me.input.isKeyPressed('left')) {
+                vector.set(-1, 0);
+            } else if (me.input.isKeyPressed('right')) {
+                vector.set(1, 0);
+            }
+            ball.pos.set(
+                this.left + (this.width / 2) - (ball.width / 2) + ((this.width) * vector.x),
+                this.top
+            );
+            ball.go(vector.x, vector.y);
         }
 
         this.kicking = true;

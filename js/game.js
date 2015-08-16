@@ -82,6 +82,7 @@ var game = {
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, 'left');
         me.input.bindKey(me.input.KEY.RIGHT, 'right');
+        me.input.bindKey(me.input.KEY.UP, 'up');
         me.input.bindKey(me.input.KEY.C, 'jump', true);
         me.input.bindKey(me.input.KEY.X, 'kick', true);
         me.input.bindKey(me.input.KEY.ESC, 'pause', true);
