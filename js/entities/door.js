@@ -82,17 +82,24 @@ game.DoorEntity = me.Entity.extend({
 
     open: function() {
         this.pos = this.anchor.clone();
-        this.pos.y -= 48;
+        if (this.facing === 'up') {
+            this.pos.y -= 48;
+        } else if (this.facing === 'right') {
+            this.pos.x += 48;
+        } else if (this.facing === 'down') {
+            this.pos.y += 48;
+        } else if (this.facing === 'left') {
+            this.pos.x -= 48;
+        }
         this.closed = false;
 
         //set timeout to close the door
-        if(this.closingTimeout == null) {
+        if (this.closingTimeout == null) {
             this.closingTimeout = me.timer.setTimeout((function() {
                 this.deactivateChannel(this.channel);
                 this.close();
                 this.closingTimeout = null;
             }).bind(this), 3000);
-            console.log(this.closingTimeout);
         }
 
     },
