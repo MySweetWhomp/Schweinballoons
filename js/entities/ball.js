@@ -188,13 +188,13 @@ game.BallEntity = me.Entity.extend({
         this.isColliding = true;
 
         if (other.name === 'player') {
-            if (me.input.keyStatus('kick') && !other.kicking) {
+            if (me.input.keyStatus('kick') && !other.kicking && !other.renderable.isFlickering()) {
                 other.carrying = true;
                 this.carried = true;
                 return false;
             }
             // if the player is hitting then we go horizontal
-            if (other.kicking) {
+            if (other.kicking && !other.renderable.isFlickering()) {
                 this.powerUp();
                 if (other.direction.x >= 0) {
                     this.goRight();

@@ -88,9 +88,6 @@ game.PlayerEntity = me.Entity.extend({
 
         // change the velocity
         this.body.vel = new me.Vector2d(-strength * 20 * direction.x, -strength);
-
-        // drop the ball
-        this.dropTheBall();
     },
 
     kick: function() {
@@ -107,6 +104,11 @@ game.PlayerEntity = me.Entity.extend({
 
      hit: function() {
         this.renderable.flicker(this.FLICKERING_TIME);
+
+        // drop the ball
+        if (this.carrying) {
+            this.dropTheBall();
+        }
      },
 
     /**
@@ -133,8 +135,6 @@ game.PlayerEntity = me.Entity.extend({
                 } else {
                     this.body.vel.x = 0;
                 }
-            } else if (this.carrying) {
-                this.dropTheBall();
             }
 
             if (this.carrying && !me.input.keyStatus('kick')) {
@@ -232,6 +232,8 @@ game.PlayerEntity = me.Entity.extend({
         ball.carried = false;
         if (powerUp) {
             ball.powerUp();
+        } else {
+            ball.powerDown();
         }
 
         var dir = 'h';
