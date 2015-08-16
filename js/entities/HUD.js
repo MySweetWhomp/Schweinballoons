@@ -27,7 +27,7 @@ game.HUD.Container = me.Container.extend({
         this.piglets = this.maxPiglets;
 
         for (var i = this.maxPiglets - 1; i >= 0; --i) {
-          this.addChild(new game.HUD.PigletItem(1 + ((9 + 1) * i) , 1));
+          this.addChild(new game.HUD.PigletItem(1 + ((11 + 1) * i) , 1));
         }
     },
 
@@ -64,7 +64,7 @@ game.HUD.PigletItem = me.AnimationSheet.extend({
     */
     init: function(x, y) {
         // call the parent constructor
-        this._super(me.AnimationSheet, 'init', [x, y, {image: "HUD", framewidth: 9, frameheight: 9}]);
+        this._super(me.AnimationSheet, 'init', [x, y, {image: "HUD", framewidth: 11, frameheight: 11}]);
 
         // animations
         this.addAnimation('notrescued', [0], 100);
