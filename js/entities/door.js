@@ -35,6 +35,8 @@ game.DoorEntity = me.Entity.extend({
             this.renderable.angle = 0;
         }
 
+        this.beforeCloseTime = settings.close || 3000;
+
         // set the channel
         this.channel = settings.channel;
 
@@ -99,7 +101,7 @@ game.DoorEntity = me.Entity.extend({
                 this.deactivateChannel(this.channel);
                 this.close();
                 this.closingTimeout = null;
-            }).bind(this), 3000);
+            }).bind(this), this.beforeCloseTime);
         }
 
     },
