@@ -106,7 +106,7 @@ var game = {
         };
 
         // starts the game.
-        me.state.change(me.state.GAME_START);
+        me.state.change(me.state.MENU);
     },
 
     pause: function() {

@@ -50,7 +50,9 @@
          *  action to perform on state change
          */
         onResetEvent: function() {
-            this.background = new me.ColorLayer('black', 'rgb(215, 232, 148)', 1);
+            this.background = new me.ImageLayer(0, -8, {
+                image : 'Title'
+            });
             this.text = new TextContainer();
             me.game.world.addChild(this.background);
             me.game.world.addChild(this.text);
