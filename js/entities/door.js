@@ -70,9 +70,9 @@ game.DoorEntity = me.Entity.extend({
 
         // handle opening
         var isChannelOn = game.channels[this.channel];
-        if (this.closed && isChannelOn) {
+        if (isChannelOn) {
             this.open();
-        } else if (!this.closed && !isChannelOn) {
+        } else {
             this.close();
         }
 
@@ -86,12 +86,14 @@ game.DoorEntity = me.Entity.extend({
         this.closed = false;
 
         //set timeout to close the door
-        if(this.closingTimeout != null) {
+        if(this.closingTimeout == null) {
             this.closingTimeout = me.timer.setTimeout((function() {
+                console.log('ke')
+                this.deactivateChannel(this.channel);
                 this.close();
                 this.closingTimeout = null;
-                console.log('kek');
             }).bind(this), 3000);
+            console.log(this.closingTimeout);
         }
 
     },
@@ -99,10 +101,11 @@ game.DoorEntity = me.Entity.extend({
     close: function() {
         this.pos = this.anchor.clone();
         this.closed = true;
+
     },
 
-    activateChannel: function(channel) {
-        game.channels[channel] = true;
+    deactivateChannel: function(channel) {
+        game.channels[channel] = false;
     },
 
    /**

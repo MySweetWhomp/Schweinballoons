@@ -29,7 +29,7 @@
   <object id="72" name="boar" x="1584" y="224" width="64" height="32"/>
   <object id="74" name="boar" x="1680" y="224" width="64" height="32"/>
   <object id="75" name="piglet" x="1888" y="176" width="16" height="16"/>
-  <object id="80" x="336" y="128" width="16" height="16"/>
+  <object id="80" x="336" y="112" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="entities">
   <object id="48" name="player" x="352" y="176" width="16" height="32"/>
@@ -41,7 +41,7 @@
     <property name="facing" value="left"/>
    </properties>
   </object>
-  <object id="79" name="door" x="336" y="144" width="16" height="48">
+  <object id="79" name="door" x="336" y="128" width="16" height="48">
    <properties>
     <property name="channel" value="0"/>
     <property name="facing" value="up"/>
