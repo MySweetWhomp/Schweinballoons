@@ -6,8 +6,10 @@ game.BlockEntity = me.Entity.extend({
     /**
      * constructor
      */
-    init:function (x, y, settings) {
+    init: function (x, y, settings) {
         settings.image = 'block';
+        settings.framewidth = 24;
+        settings.frameheight = 24;
 
         // call the constructor
         this._super(me.Entity, 'init', [x, y , settings]);
@@ -22,13 +24,18 @@ game.BlockEntity = me.Entity.extend({
         // we always update the piglets, ALWAYS
         this.alwaysUpdate = true;
 
-        // we set initial values
-        this.rescued = false;
+        this.renderable.addAnimation('base', [0]);
+        this.renderable.addAnimation('break', [0, 1, 2]);
+        this.renderable.setCurrentAnimation('base');
     },
 
     break: function() {
         //break the block
-        me.game.world.removeChild(this);
+        if (!this.renderable.isCurrentAnimation('break')) {
+            this.renderable.setCurrentAnimation('break', function() {
+                me.game.world.removeChild(this);
+            }.bind(this));
+        }
     },
 
     /**
