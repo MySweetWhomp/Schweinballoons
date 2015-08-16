@@ -41,7 +41,10 @@ game.PigletEntity = me.Entity.extend({
         this.setCurrentAnimation('freed');
 
         if(!this.rescued) {
-            me.game.world.getChildByName('HUD')[0].pigletRescued();
+            var HUD = me.game.world.getChildByName('HUD')[0];
+            if (HUD != null) {
+                HUD.pigletRescued();
+            }
             this.rescued = true;
         }
     },

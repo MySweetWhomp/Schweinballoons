@@ -45,7 +45,7 @@
                 ['2D ART', ' ', 'MATTHIEU GODET'],
                 ['MUSIC & SOUNDS', ' ', 'DJ PIE'],
                 ['PROGRAMMATION', ' ', 'PAUL JOANNON', 'MATTHIEU VIENOT'],
-                ['THANKS FOR PLAYING', '', '-', '', 'MERCI D\'AVOIR JOUE']
+                ['THANKS FOR', 'PLAYING', '', '-', '', 'MERCI D\'AVOIR', 'JOUE']
             ];
 
             var screenHeight = me.game.viewport.height;
@@ -91,13 +91,31 @@
         onResetEvent: function() {
             this.background = new me.ColorLayer('background', 'rgb(215, 232, 148)', 1);
             this.credits = new CreditsContainer();
+
+            this.piglets = [
+                new game.PigletEntity(5, 16, { width : 16 , height : 16 }),
+                new game.PigletEntity(139, 16, { width : 16 , height : 16 }),
+                new game.PigletEntity(5, 64, { width : 16 , height : 16 }),
+                new game.PigletEntity(139, 64, { width : 16 , height : 16 }),
+                new game.PigletEntity(5, 112, { width : 16 , height : 16 }),
+                new game.PigletEntity(139, 112, { width : 16 , height : 16 })
+            ];
+
             me.game.world.addChild(this.background);
             me.game.world.addChild(this.credits);
+            for (var i = 0; i < this.piglets.length; ++i) {
+                this.piglets[i].floating = true;
+                this.piglets[i].rescue();
+                me.game.world.addChild(this.piglets[i]);
+            }
         },
 
         onDestroyEvent: function() {
             me.game.world.removeChild(this.background);
             me.game.world.removeChild(this.credits);
+            for (var i = 0; i < this.piglets.length; ++i) {
+                me.game.world.removeChild(this.piglets[i]);
+            }
         }
     });
 })();
