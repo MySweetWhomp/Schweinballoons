@@ -138,7 +138,7 @@ game.PlayerEntity = me.Entity.extend({
             }
 
             if (this.carrying && !me.input.keyStatus('kick')) {
-                this.dropTheBall();
+                this.dropTheBall(true);
             }
 
             // handling jump
@@ -227,10 +227,12 @@ game.PlayerEntity = me.Entity.extend({
         return name + (this.carrying ? '-carry' : '');
     },
 
-    dropTheBall: function() {
+    dropTheBall: function(powerUp) {
         var ball = me.game.world.getChildByName('ball')[0];
         ball.carried = false;
-        ball.powerUp();
+        if (powerUp) {
+            ball.powerUp();
+        }
 
         var dir = 'h';
         if (me.input.isKeyPressed('up')) {
