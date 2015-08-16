@@ -18,6 +18,7 @@ game.DoorEntity = me.Entity.extend({
         this.closed = true;
         this.channel = settings.channel;
         this.anchor = this.pos;
+        this.closingTimeout = null;
 
         // set channel
         game.channels[this.channel] = false;
@@ -85,7 +86,7 @@ game.DoorEntity = me.Entity.extend({
         this.closed = false;
 
         //set timeout to close the door
-        if(!this.closingTimeout) {
+        if(this.closingTimeout != null) {
             this.closingTimeout = me.timer.setTimeout((function() {
                 this.close();
                 this.closingTimeout = null;
