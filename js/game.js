@@ -5,6 +5,9 @@ var game = {
     // an object where to store game information
     data : { won : false },
 
+    // the channels for buttons/doors
+    channels : { },
+
     // Run on page load.
     onload : function () {
         // Initialize the video.
@@ -80,6 +83,8 @@ var game = {
         me.pool.register('piglet', game.PigletEntity);
         me.pool.register('boar', game.BoarEntity);
         me.pool.register('block', game.BlockEntity);
+        me.pool.register('trigger', game.TriggerEntity);
+        me.pool.register('door', game.DoorEntity);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, 'left');

@@ -249,20 +249,22 @@ game.BallEntity = me.Entity.extend({
                 this.powerDown();
                 return true;
             }
+        } else if (other.name === 'trigger') {
+            other.trigger();
         } else if (other.name !== 'piglet'){
             if (response.overlap >= this.body.width / 2) {
                 this.pos = this.lastNotCollidingPos.clone();
-                // this.direction = this.lastNotCollidingDir.clone();
             }
 
-            if (other.name === 'block') {
-                if (this.powerLevel === this.DECCELERATION_STEPS) {
+            if (this.powerLevel === this.DECCELERATION_STEPS) {
+                if (other.name === 'block') {
                     other.break();
                 }
             }
 
             this.bounceDirection();
             this.powerDown();
+
         }
 
         return false;

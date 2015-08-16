@@ -286,6 +286,8 @@ game.PlayerEntity = me.Entity.extend({
         } else if (other.name === 'piglet') {
             other.rescue();
             return false;
+        } else if (other.name === 'trigger') {
+            return false;
         } else if (other.name === 'boar') {
             // if our body (not the foot) touches the boar
             if (otherShapeIndex === 0) {
