@@ -185,7 +185,9 @@ game.BallEntity = me.Entity.extend({
         var otherShapeIndex = response.a.name === other.name ? response.indexShapeA
                                                              : response.indexShapeB;
 
-        this.isColliding = true;
+        if (response.overlap >= this.body.width / 2) {
+            this.isColliding = true;
+        }
 
         if (other.name === 'player') {
             if (me.input.keyStatus('kick') && !other.kicking && !other.renderable.isFlickering()) {
@@ -262,6 +264,11 @@ game.BallEntity = me.Entity.extend({
                 }
             }
 
+            if (response.a.name === this.name) {
+                this.pos.sub(response.overlapV);
+            } else {
+                this.pos.add(response.overlapV);
+            }
             this.bounceDirection();
             this.powerDown();
 
