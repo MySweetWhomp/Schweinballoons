@@ -10,6 +10,7 @@ game.PigletEntity = me.Entity.extend({
         settings.image = 'piglet';
         settings.framewidth = 26;
         settings.frameheight = 32;
+
         // call the constructor
         this._super(me.Entity, 'init', [x, y , settings]);
         this.name = 'piglet';
@@ -17,7 +18,7 @@ game.PigletEntity = me.Entity.extend({
         this.renderable.translate(0, -8);
 
         // we set the velocity of the player's body
-        this.body.setVelocity(0, 0);
+        this.body.setVelocity(0, 5);
 
         // we set initial values
         this.rescued = false;
@@ -66,6 +67,9 @@ game.PigletEntity = me.Entity.extend({
      * (called when colliding with other objects)
      */
     onCollision : function (response, other) {
-        return false;
+        if (['player', 'ball', 'boar'].indexOf(other.name) >= 0) {
+            return false;
+        }
+        return true;
     }
 });
