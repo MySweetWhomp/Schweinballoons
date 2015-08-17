@@ -45,6 +45,7 @@ game.PlayerEntity = me.Entity.extend({
         this.onAirTime = 100;
         this.JUMP_MAX_AIRBONRNE_TIME = 80;
         this.FLICKERING_TIME = 2000;
+        this.body.gravity = 0.65;
 
         // setting initial direction
         this.direction = new me.Vector2d(1, 0);
