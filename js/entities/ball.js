@@ -45,6 +45,9 @@ game.BallEntity = me.Entity.extend({
         this.lastNotCollidingDir = this.direction.clone();
 
         this.carried = false;
+
+        this.offScreenSince = 0;
+        this.MAX_TIME_OFFSCREEN = 3000;
     },
 
     setCurrentAnimation: function(name, onComplete) {
@@ -136,9 +139,50 @@ game.BallEntity = me.Entity.extend({
         this.lastDirectionChange += dt;
         this.isColliding = false;
 
+        this.offScreenSince += dt;
+        if (me.game.viewport.isVisible(this)) {
+            this.offScreenSince = 0;
+        }
+        if (this.offScreenSince >= this.MAX_TIME_OFFSCREEN) {
+            this.respawn();
+        }
+
         return (this._super(me.Entity, 'update', [dt]) ||
                 this.body.vel.x !== 0 ||
                 this.body.vel.y !== 0);
+    },
+
+    respawn: function() {
+        var oldPos = this.pos.clone(),
+            player = me.game.world.getChildByName('player')[0],
+            anchor = new me.Vector2d(
+                player.pos.x + (player.width / 2) - (this.width / 2),
+                player.pos.y + (player.height / 2) - (this.height / 2)
+            ),
+            ok = false,
+            i = 1,
+            collisionResponse = new me.collision.ResponseObject();
+
+        while (!ok && i < 10) {
+            var r = i * (this.width * 1.5);
+            for (var th = -Math.PI / 2; th > -(Math.PI * 2); th -= Math.PI / 8) {
+                this.pos.set(
+                    anchor.x + (r * Math.cos(th)),
+                    anchor.y + (r * Math.sin(th))
+                );
+                if (!me.collision.check(this, collisionResponse)) {
+                    ok = true;
+                    break;
+                }
+            }
+            ++i;
+        }
+
+        if (!ok) {
+            this.pos.setV(this.oldPos);
+        } else {
+            // TODO play spawn animation
+        }
     },
 
     go: function(x, y) {
