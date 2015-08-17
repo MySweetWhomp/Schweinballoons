@@ -268,15 +268,19 @@ game.PlayerEntity = me.Entity.extend({
             ball.goUp();
         } else {
             var vector = this.direction.clone();
-            if (me.input.isKeyPressed('left')) {
-                vector.set(-1, 0);
-            } else if (me.input.isKeyPressed('right')) {
-                vector.set(1, 0);
-            }
+
             ball.pos.set(
                 this.left + (this.width / 2) - (ball.width / 2) + ((this.width) * vector.x),
                 this.top + (this.height / 2) - (ball.height / 2)
             );
+            if (me.collision.check(ball)) {
+                vector.x = -vector.x;
+                ball.pos.set(
+                    this.left + (this.width / 2) - (ball.width / 2) + ((this.width) * vector.x),
+                    this.top + (this.height / 2) - (ball.height / 2)
+                );
+            }
+
             ball.go(vector.x, vector.y);
         }
 
