@@ -23,10 +23,12 @@ game.PlayerEntity = me.Entity.extend({
                                                    this.height / 2));
         this.SCROLL_OFFSET_MAX = 30;
         this.SCROLL_OFFSET_SPEED = 1;
-        this.SCROLL_OFFSET_INERTIAL_SPEED = 3;
+        this.SCROLL_OFFSET_INERTIAL_SPEED = 2;
         this.SCROLL_DEADZONE_MAX = 8;
+        this.SCROLL_DEADZONE_INERTIAL_MAX = 20;
         this.scrollOffset = 0;
         this.scrollDeadzone = 0;
+        this.scrollInertialDeadzone = 0;
         me.game.viewport.setDeadzone(0, 0);
         me.game.viewport.follow(this.center, me.game.viewport.AXIS.BOTH);
 
@@ -136,6 +138,7 @@ game.PlayerEntity = me.Entity.extend({
                     this.body.vel.x -= this.body.accel.x * me.timer.tick;
                     this.direction = new me.Vector2d(-1, 0);
                     this.scrollDeadzone -= 1;
+                    this.scrollInertialDeadzone -= 1;
                     if(this.scrollDeadzone < -this.SCROLL_DEADZONE_MAX) {
                         this.scrollOffset -= this.SCROLL_OFFSET_SPEED;
                     }
@@ -144,12 +147,21 @@ game.PlayerEntity = me.Entity.extend({
                     this.body.vel.x += this.body.accel.x * me.timer.tick;
                     this.direction = new me.Vector2d(1, 0);
                     this.scrollDeadzone += 1;
+                    this.scrollInertialDeadzone += 1;
                     if(this.scrollDeadzone > this.SCROLL_DEADZONE_MAX) {
                         this.scrollOffset += this.SCROLL_OFFSET_SPEED;
                     }
                 } else {
                     this.body.vel.x = 0;
-                    this.scrollOffset += (this.SCROLL_OFFSET_INERTIAL_SPEED * Math.sign(this.direction.x));
+
+                    if (Math.abs(this.scrollInertialDeadzone) >= this.SCROLL_DEADZONE_INERTIAL_MAX) {
+                        this.scrollOffset += (this.SCROLL_OFFSET_INERTIAL_SPEED * Math.sign(this.direction.x));
+
+                        if(Math.abs(this.scrollOffset) >= this.SCROLL_OFFSET_MAX) {
+                            this.scrollInertialDeadzone = 0;
+                        }
+                    }
+                    console.log(this.scrollInertialDeadzone);
                 }
             }
 
@@ -231,8 +243,14 @@ game.PlayerEntity = me.Entity.extend({
         this.scrollDeadzone = this.scrollDeadzone > this.SCROLL_DEADZONE_MAX
                                 ? this.SCROLL_DEADZONE_MAX
                                 : (this.scrollDeadzone < -this.SCROLL_DEADZONE_MAX
-                                        ? -this.SCROLL_DEADZONE_MAX
-                                        : this.scrollDeadzone);
+                                    ? -this.SCROLL_DEADZONE_MAX
+                                    : this.scrollDeadzone);
+
+        this.scrollInertialDeadzone = this.scrollInertialDeadzone > this.SCROLL_DEADZONE_INERTIAL_MAX
+                                        ? this.SCROLL_DEADZONE_INERTIAL_MAX
+                                        : (this.scrollInertialDeadzone < -this.SCROLL_DEADZONE_INERTIAL_MAX
+                                            ? -this.SCROLL_DEADZONE_INERTIAL_MAX
+                                            : this.scrollInertialDeadzone);
 
         this.scrollOffset = this.scrollOffset > this.SCROLL_OFFSET_MAX
                                 ? this.SCROLL_OFFSET_MAX
