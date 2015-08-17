@@ -105,7 +105,7 @@ game.BallEntity = me.Entity.extend({
 
         this.body.vel.set(0, 0);
 
-        if (!game.data.won && !this.renderable.isCurrentAnimation('spawn')) {
+        if (!me.state.current().won && !this.renderable.isCurrentAnimation('spawn')) {
             this.body.vel.x += (this.body.accel.x * me.timer.tick) * this.direction.x;
             this.body.vel.y += (this.body.accel.y * me.timer.tick) * this.direction.y;
         }

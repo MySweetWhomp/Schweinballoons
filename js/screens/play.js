@@ -38,7 +38,7 @@ game.PlayScreen = me.ScreenObject.extend({
     },
 
     nextLevel: function() {
-        if (game.data.currentLevel < me.levelDirector.levelCount()) {
+        if (game.data.currentLevel < me.levelDirector.levelCount() - 1) {
             ++game.data.currentLevel;
             me.state.change(me.state.PLAY);
         } else {
