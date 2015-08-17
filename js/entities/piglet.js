@@ -26,6 +26,7 @@ game.PigletEntity = me.Entity.extend({
         // animations
         this.renderable.addAnimation('kidnapped', [0, 1, 2, 3], 100);
         this.renderable.addAnimation('freed', [4, 5, 6, 7], 100);
+        this.renderable.addAnimation('happy', [8, 9, 10, 11, 100]);
         this.setCurrentAnimation('kidnapped');
     },
 
