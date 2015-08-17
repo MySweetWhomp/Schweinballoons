@@ -275,7 +275,7 @@ game.PlayerEntity = me.Entity.extend({
                 this.top + (this.height / 2) - (ball.height / 2)
             );
             if (me.collision.check(ball, response)) {
-                if (response.other != null && response.other.name !== this.name) {
+                if (response.overlap >= ball.body.width / 2) {
                     vector.x = -vector.x;
                     ball.pos.set(
                         this.left + (this.width / 2) - (ball.width / 2) + ((this.width) * vector.x),
