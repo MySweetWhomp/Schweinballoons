@@ -20,7 +20,7 @@ var game = {
         }
 
         // Initialize the audio.
-        me.audio.init('mp3,ogg');
+        me.audio.init('ogg');
 
         // setting up sound
         me.audio.samplePlaying = null;
@@ -118,12 +118,12 @@ var game = {
 
     pause: function() {
         this.paused = true;
-        me.state.pause();
+        me.state.pause(true);
     },
 
     resume: function() {
         this.paused = false;
-        me.state.resume();
+        me.state.resume(true);
     },
 
     isPaused: function() {
