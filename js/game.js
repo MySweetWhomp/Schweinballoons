@@ -103,8 +103,6 @@ var game = {
         me.input.bindKey(me.input.KEY.C, 'jump', true);
         me.input.bindKey(me.input.KEY.X, 'kick', true);
         me.input.bindKey(me.input.KEY.ESC, 'pause', true);
-        // added for debug purposes
-        me.input.bindKey(me.input.KEY.E, 'debug', true);
 
         // sets global gravity
         me.sys.gravity = 0.7;
