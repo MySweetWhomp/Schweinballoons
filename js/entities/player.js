@@ -267,18 +267,21 @@ game.PlayerEntity = me.Entity.extend({
             ball.pos.set(this.left, this.top - ball.body.height);
             ball.goUp();
         } else {
-            var vector = this.direction.clone();
+            var vector = this.direction.clone(),
+                response = new me.collision.ResponseObject();
 
             ball.pos.set(
                 this.left + (this.width / 2) - (ball.width / 2) + ((this.width) * vector.x),
                 this.top + (this.height / 2) - (ball.height / 2)
             );
-            if (me.collision.check(ball)) {
-                vector.x = -vector.x;
-                ball.pos.set(
-                    this.left + (this.width / 2) - (ball.width / 2) + ((this.width) * vector.x),
-                    this.top + (this.height / 2) - (ball.height / 2)
-                );
+            if (me.collision.check(ball, response)) {
+                if (response.other.name !== this.name) {
+                    vector.x = -vector.x;
+                    ball.pos.set(
+                        this.left + (this.width / 2) - (ball.width / 2) + ((this.width) * vector.x),
+                        this.top + (this.height / 2) - (ball.height / 2)
+                    );
+                }
             }
 
             ball.go(vector.x, vector.y);
