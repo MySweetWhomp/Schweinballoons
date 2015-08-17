@@ -55,7 +55,7 @@ game.PigletEntity = me.Entity.extend({
         // apply physics to the body (this moves the entity)
         this.body.update(dt);
 
-        if (me.game.viewport.isVisible(this)) {
+        if (me.game.viewport.isVisible(this) && !this.rescued) {
             me.audio.playUnique('jump', 'action');
         }
 
