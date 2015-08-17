@@ -38,6 +38,8 @@ game.BallEntity = me.Entity.extend({
         this.renderable.addAnimation('kicked', [5, 5], 50);
         this.renderable.addAnimation('vAcceleration', [3, 4], 50);
         this.renderable.addAnimation('hAcceleration', [6, 7], 50);
+        this.renderable.addAnimation('spawn', [8, 9, 8, 9, 8, 9, 10,
+                                               11, 10, 11, 10, 11, 60]);
         this.setCurrentAnimation('idle');
 
         this.isColliding = false;
@@ -103,7 +105,7 @@ game.BallEntity = me.Entity.extend({
 
         this.body.vel.set(0, 0);
 
-        if (!game.data.won) {
+        if (!game.data.won && !this.renderable.isCurrentAnimation('spawn')) {
             this.body.vel.x += (this.body.accel.x * me.timer.tick) * this.direction.x;
             this.body.vel.y += (this.body.accel.y * me.timer.tick) * this.direction.y;
         }
@@ -181,7 +183,9 @@ game.BallEntity = me.Entity.extend({
         if (!ok) {
             this.pos.setV(this.oldPos);
         } else {
-            // TODO play spawn animation
+            this.setCurrentAnimation('spawn', function() {
+                this.setCurrentAnimation('idle');
+            }.bind(this));
         }
     },
 
@@ -224,7 +228,9 @@ game.BallEntity = me.Entity.extend({
     },
 
     onCollision: function(response, other) {
-        if (this.carried) { return false; }
+        if (this.carried || this.renderable.isCurrentAnimation('spawn')) {
+            return false;
+        }
 
         var otherShapeIndex = response.a.name === other.name ? response.indexShapeA
                                                              : response.indexShapeB;
