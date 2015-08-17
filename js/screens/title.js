@@ -51,6 +51,8 @@
          *  action to perform on state change
          */
         onResetEvent: function() {
+            me.audio.playUniqueTrack('Intro');
+
             this.backgroundColor = new me.ColorLayer('background', 'rgb(215, 232, 148)', 1);
             this.background = new me.ImageLayer(0, -8, {
                 image : 'Title'

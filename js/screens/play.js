@@ -8,7 +8,7 @@ game.PlayScreen = me.ScreenObject.extend({
         me.levelDirector.loadLevel('area' + currentLevelIndex);
 
         // setting bgm
-        me.audio.playTrack('BGM');
+        me.audio.playUniqueTrack('BGM');
 
         // add our HUD to the game world
         this.HUD = new game.HUD.Container();

@@ -227,6 +227,8 @@
             this.currentScreen = 1;
             this.lastScreen = screens.length;
 
+            me.audio.playUniqueTrack('Intro');
+
             this.screen = new screens[0]();
 
             me.game.world.addChild(this.screen);

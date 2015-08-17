@@ -60,6 +60,13 @@ var game = {
             }
         };
 
+        me.audio.playUniqueTrack = function(trackName) {
+            if (me.audio.getCurrentTrack() !== trackName) {
+                me.audio.stopTrack();
+                me.audio.playTrack(trackName);
+            }
+        };
+
         me.state.set(me.state.LOADING, new game.LoadingScreen());
 
         // Set a callback to run when loading is complete.
@@ -114,7 +121,7 @@ var game = {
         };
 
         // starts the game.
-        me.state.change(me.state.PLAY);
+        me.state.change(me.state.GAME_START);
     },
 
     pause: function() {
