@@ -21,6 +21,12 @@ game.PlayerEntity = me.Entity.extend({
         this.center = this.pos.clone()
                               .add(new me.Vector2d(this.width / 2,
                                                    this.height / 2));
+        this.SCROLL_OFFSET_MAX = 30;
+        this.SCROLL_OFFSET_SPEED = 4;
+        this.SCROLL_DEADZONE_MAX = 10;
+        this.scrollOffset = 0;
+        this.scrollDeadzone = 0;
+        me.game.viewport.setDeadzone(0, 0);
         me.game.viewport.follow(this.center, me.game.viewport.AXIS.BOTH);
 
         // we set the velocity of the player's body
@@ -41,7 +47,6 @@ game.PlayerEntity = me.Entity.extend({
         this.direction = new me.Vector2d(1, 0);
         this.knockbacked = false;
         this.powerJumping = false;
-
         this.carrying = false;
 
         // animations
@@ -88,6 +93,9 @@ game.PlayerEntity = me.Entity.extend({
 
         // change the velocity
         this.body.vel = new me.Vector2d(-strength * 20 * direction.x, -strength);
+
+        // drop the ball
+        this.dropTheBall();
     },
 
     kick: function() {
@@ -104,11 +112,6 @@ game.PlayerEntity = me.Entity.extend({
 
      hit: function() {
         this.renderable.flicker(this.FLICKERING_TIME);
-
-        // drop the ball
-        if (this.carrying) {
-            this.dropTheBall();
-        }
      },
 
     /**
@@ -128,13 +131,23 @@ game.PlayerEntity = me.Entity.extend({
                     this.flipX(true);
                     this.body.vel.x -= this.body.accel.x * me.timer.tick;
                     this.direction = new me.Vector2d(-1, 0);
+                    this.scrollDeadzone -= 1;
+                    if(this.scrollDeadzone < -this.SCROLL_DEADZONE_MAX) {
+                        this.scrollOffset -= this.SCROLL_OFFSET_SPEED;
+                    }
                 } else if (me.input.isKeyPressed('right')) {
                     this.flipX(false);
                     this.body.vel.x += this.body.accel.x * me.timer.tick;
                     this.direction = new me.Vector2d(1, 0);
+                    this.scrollDeadzone += 1;
+                    if(this.scrollDeadzone > this.SCROLL_DEADZONE_MAX) {
+                        this.scrollOffset += this.SCROLL_OFFSET_SPEED;
+                    }
                 } else {
                     this.body.vel.x = 0;
                 }
+            } else if (this.carrying) {
+                this.dropTheBall();
             }
 
             if (this.carrying && !me.input.keyStatus('kick')) {
@@ -212,9 +225,22 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         // Compute the center
+        this.scrollDeadzone = this.scrollDeadzone > this.SCROLL_DEADZONE_MAX
+                                ? this.SCROLL_DEADZONE_MAX
+                                : (this.scrollDeadzone < -this.SCROLL_DEADZONE_MAX
+                                        ? -this.SCROLL_DEADZONE_MAX
+                                        : this.scrollDeadzone);
+
+        this.scrollOffset = this.scrollOffset > this.SCROLL_OFFSET_MAX
+                                ? this.SCROLL_OFFSET_MAX
+                                : (this.scrollOffset < -this.SCROLL_OFFSET_MAX
+                                        ? -this.SCROLL_OFFSET_MAX
+                                        : this.scrollOffset);
+
+        var ball = me.game.world.getChildByName('ball')[0];
         var center = this.pos.clone()
-                            .add(new me.Vector2d(this.width / 2,
-                                                 this.height / 2));
+                            .add(new me.Vector2d((this.width / 2) + this.scrollOffset,
+                                                 this.height / 2))
         this.center.set(center.x, center.y);
 
         // return true if we moved or if the renderable was updated
@@ -232,8 +258,6 @@ game.PlayerEntity = me.Entity.extend({
         ball.carried = false;
         if (powerUp) {
             ball.powerUp();
-        } else {
-            ball.powerDown();
         }
 
         var dir = 'h';
