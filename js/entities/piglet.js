@@ -18,7 +18,7 @@ game.PigletEntity = me.Entity.extend({
         this.renderable.translate(0, -8);
 
         // we set the velocity of the player's body
-        this.body.setVelocity(0, 5);
+        this.body.setVelocity(5, 5);
 
         // we set initial values
         this.rescued = false;

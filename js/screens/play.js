@@ -42,7 +42,7 @@ game.PlayScreen = me.ScreenObject.extend({
             ++game.data.currentLevel;
             me.state.change(me.state.PLAY);
         } else {
-            me.state.change(me.state.CREDITS);
+            me.state.change(me.state.GAME_END);
         }
     }
 });
