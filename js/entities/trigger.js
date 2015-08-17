@@ -39,7 +39,6 @@ game.TriggerEntity = me.Entity.extend({
         this.body.setMaxVelocity(0, 0);
         this.body.gravity = 0;
 
-        // we always update the piglets, ALWAYS
         this.alwaysUpdate = true;
 
         //animations

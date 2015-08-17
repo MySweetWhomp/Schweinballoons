@@ -316,7 +316,7 @@ game.PlayerEntity = me.Entity.extend({
         // handling custom collision
         if (other.name === 'ball') {
             if (other.carried) { return false; }
-            return !this.powerJumping;
+            return !this.powerJumping && !this.renderable.isFlickering();
         } else if (other.name === 'piglet') {
             other.rescue();
             return false;

@@ -190,7 +190,11 @@ game.BallEntity = me.Entity.extend({
         }
 
         if (other.name === 'player') {
-            if (me.input.keyStatus('kick') && !other.kicking && !other.renderable.isFlickering()) {
+            if (other.renderable.isFlickering()) {
+                return false;
+            }
+
+            if (me.input.keyStatus('kick') && !other.kicking) {
                 other.carrying = true;
                 this.carried = true;
                 return false;
