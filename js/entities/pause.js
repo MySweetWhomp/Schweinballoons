@@ -27,6 +27,7 @@ game.Pause.Container = me.Container.extend({
         var ret = this._super(me.Container, 'update', [dt]);
 
         if (me.input.isKeyPressed('pause')) {
+            me.audio.playUnique('startpause', 'action');
             this.alpha = this.alpha ? 0 : 1;
             if (this.alpha) {
                 game.pause();

@@ -30,6 +30,7 @@
                 me.input.isKeyPressed('jump') ||
                 me.input.isKeyPressed('pause')) {
                     ret = true;
+                    me.audio.playUnique('startpause', 'action');
                     me.state.change(me.state.PLAY);
                 }
 
