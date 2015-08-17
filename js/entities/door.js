@@ -37,6 +37,8 @@ game.DoorEntity = me.Entity.extend({
         // set the channel
         this.channel = settings.channel;
 
+        this.alwaysUpdate = true;
+
         // we set the velocity of the player's body
         this.body.setVelocity(1, 1);
         this.body.gravity = 0;
