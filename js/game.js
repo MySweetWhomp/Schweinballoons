@@ -3,7 +3,9 @@
 var game = {
 
     // an object where to store game information
-    data : { won : false },
+    data : {
+        currentLevel : 1
+    },
 
     // the channels for buttons/doors
     channels : { },
@@ -111,7 +113,7 @@ var game = {
         };
 
         // starts the game.
-        me.state.change(me.state.GAME_START);
+        me.state.change(me.state.PLAY);
     },
 
     pause: function() {
@@ -127,14 +129,4 @@ var game = {
     isPaused: function() {
         return this.paused;
     },
-
-    win: function() {
-        me.input.paused = true;
-        this.data.won = true;
-    },
-
-    nextLevel: function() {
-        // TODO load next level
-        me.state.change(me.state.PLAY);
-    }
 };

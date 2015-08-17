@@ -192,10 +192,10 @@ game.PlayerEntity = me.Entity.extend({
         // handle collisions against other shapes
         me.collision.check(this);
 
-        if (game.data.won) {
+        if (me.state.current().won) {
             this.setCurrentAnimation('win', function() {
                 this.setCurrentAnimation('win');
-                game.nextLevel();
+                me.state.current().nextLevel();
             }.bind(this));
             this.body.vel.x = 0;
         } else {

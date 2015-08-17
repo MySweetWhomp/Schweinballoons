@@ -4,7 +4,8 @@ game.PlayScreen = me.ScreenObject.extend({
      */
     onResetEvent: function() {
         // load a level
-        me.levelDirector.loadLevel("area01");
+        var currentLevelIndex = '0' + String(game.data.currentLevel);
+        me.levelDirector.loadLevel('area' + currentLevelIndex);
 
         // setting bgm
         //me.audio.playTrack('BGM');
@@ -15,10 +16,11 @@ game.PlayScreen = me.ScreenObject.extend({
         me.game.world.addChild(this.HUD);
         me.game.world.addChild(this.pause);
 
-        game.data.won = false;
         me.input.paused = false;
 
         me.state.transition('fade', 'rgb(215, 232, 148)', 350);
+
+        this.won = false;
     },
 
     /**
@@ -28,5 +30,19 @@ game.PlayScreen = me.ScreenObject.extend({
         // remove the HUD from the game world
         me.game.world.removeChild(this.HUD);
         me.game.world.removeChild(this.pause);
+    },
+
+    win: function() {
+        me.input.paused = true;
+        this.won = true;
+    },
+
+    nextLevel: function() {
+        if (game.data.currentLevel < me.levelDirector.levelCount()) {
+            ++game.data.currentLevel;
+            me.state.change(me.state.PLAY);
+        } else {
+            me.state.change(me.state.CREDITS);
+        }
     }
 });

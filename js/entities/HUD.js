@@ -48,7 +48,7 @@ game.HUD.Container = me.Container.extend({
         // if no more piglets
         if (this.piglets <= 0) {
             // A WINNER IS YOU
-            game.win();
+            me.state.current().win();
         }
     }
 });
