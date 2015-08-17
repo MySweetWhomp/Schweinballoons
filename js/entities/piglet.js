@@ -37,10 +37,11 @@ game.PigletEntity = me.Entity.extend({
     rescue: function() {
         this.setCurrentAnimation('freed');
 
-        if(!this.rescued) {
+        if (!this.rescued) {
             var HUD = me.game.world.getChildByName('HUD')[0];
             if (HUD != null) {
                 HUD.pigletRescued();
+                me.audio.playUnique('youpi', 'action');
             }
             this.rescued = true;
         }
