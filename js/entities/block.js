@@ -25,7 +25,7 @@ game.BlockEntity = me.Entity.extend({
         this.alwaysUpdate = true;
 
         this.renderable.addAnimation('base', [0]);
-        this.renderable.addAnimation('break', [0, 1, 2]);
+        this.renderable.addAnimation('break', [1, 2]);
         this.renderable.setCurrentAnimation('base');
     },
 
