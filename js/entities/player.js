@@ -215,6 +215,9 @@ game.PlayerEntity = me.Entity.extend({
         } else {
             // update animation
             if (!this.kicking) {
+                if (this.body.shapes.length > 1) {
+                    this.body.removeShapeAt(1);
+                }
                 if (this.knockbacked) {
                     this.setCurrentAnimation('stun');
                 } else if (this.body.jumping) {
@@ -335,8 +338,7 @@ game.PlayerEntity = me.Entity.extend({
         var relativeOverlapV = response.overlapV.clone().scale(this.name === response.a.name ? 1 : 0);
         // handling custom collision
         if (other.name === 'ball') {
-            if (other.carried) { return false; }
-            return !this.powerJumping && !this.renderable.isFlickering();
+            return false;
         } else if (other.name === 'piglet') {
             other.rescue();
             return false;
@@ -367,8 +369,7 @@ game.PlayerEntity = me.Entity.extend({
                 }
                 return !this.renderable.isFlickering() && !other.stunned;
             }
-        }
-        else {
+        } else {
             // we're not knockbacked anymore
             this.knockbacked = false;
             this.powerJumping = false;
