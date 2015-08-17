@@ -7,6 +7,7 @@
                 width : 16,
                 height : 32
             });
+            this.player.body.gravity = 0;
             this.player.pos.set(-this.player.renderable.width, this.player.pos.y);
             this.addChild(this.player);
 
@@ -20,7 +21,7 @@
                         height : 16
                     }
                 ));
-                this.piglets[i].gravity = 0;
+                this.piglets[i].body.gravity = 0;
                 this.piglets[i].rescued = true;
                 this.piglets[i].setCurrentAnimation('happy');
                 this.piglets[i].alwaysUpdate = true;
