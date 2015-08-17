@@ -142,6 +142,8 @@ game.BoarEntity = me.Entity.extend({
       * (this will destroy the entity : be careful)
       */
     kill: function() {
+        me.audio.playUnique('mort', 'action');
+
         // stopping body
         this.dying = true;
         this.body.gravity = 0;
