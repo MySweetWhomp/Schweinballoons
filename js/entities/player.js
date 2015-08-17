@@ -23,6 +23,7 @@ game.PlayerEntity = me.Entity.extend({
                                                    this.height / 2));
         this.SCROLL_OFFSET_MAX = 30;
         this.SCROLL_OFFSET_SPEED = 1;
+        this.SCROLL_OFFSET_INERTIAL_SPEED = 3;
         this.SCROLL_DEADZONE_MAX = 8;
         this.scrollOffset = 0;
         this.scrollDeadzone = 0;
@@ -148,6 +149,7 @@ game.PlayerEntity = me.Entity.extend({
                     }
                 } else {
                     this.body.vel.x = 0;
+                    this.scrollOffset += (this.SCROLL_OFFSET_INERTIAL_SPEED * Math.sign(this.direction.x));
                 }
             }
 
