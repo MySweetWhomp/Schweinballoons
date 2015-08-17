@@ -25,7 +25,7 @@ var game = {
         // setting up sound
         me.audio.samplePlaying = null;
         me.audio.samplePriority = { action: ['startpause', 'youpi', 'mort', 'interrupteur',
-                                             'blockdestroy', 'kick', 'jump'] };
+                                             'blockdestroy', 'kick', 'jump', 'oscours'] };
 
         me.audio.playUnique = function(soundName, channel, loop) {
             // set to default channel

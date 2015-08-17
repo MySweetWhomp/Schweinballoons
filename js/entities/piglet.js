@@ -55,6 +55,10 @@ game.PigletEntity = me.Entity.extend({
         // apply physics to the body (this moves the entity)
         this.body.update(dt);
 
+        if (me.game.viewport.isVisible(this)) {
+            me.audio.playUnique('jump', 'action');
+        }
+
         // handle collisions against other shapes
         me.collision.check(this);
 
