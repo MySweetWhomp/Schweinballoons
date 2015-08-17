@@ -116,6 +116,11 @@
             for (var i = 0; i < this.piglets.length; ++i) {
                 me.game.world.removeChild(this.piglets[i]);
             }
+        },
+
+        win: function() {
+            // An empty function
+            // Must be there to be able to display happy piglets
         }
     });
 })();
