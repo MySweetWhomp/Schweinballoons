@@ -203,6 +203,9 @@ game.PlayerEntity = me.Entity.extend({
         } else {
             // update animation
             if (!this.kicking) {
+                if (this.body.shapes.length > 1) {
+                    this.body.removeShapeAt(1);
+                }
                 if (this.knockbacked) {
                     this.setCurrentAnimation('stun');
                 } else if (this.body.jumping) {
