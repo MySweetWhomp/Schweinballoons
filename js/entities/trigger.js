@@ -77,6 +77,8 @@ game.TriggerEntity = me.Entity.extend({
 
     activateChannel: function(channel) {
         if (!game.channels[channel]) {
+            me.audio.playUnique('interrupteur', 'action');
+
             game.channels[channel] = true;
 
             // set timeout to close the doors
@@ -90,7 +92,11 @@ game.TriggerEntity = me.Entity.extend({
     },
 
     deactivateChannel: function(channel) {
-        game.channels[channel] = false;
+        if (game.channels[channel]) {
+            me.audio.playUnique('interrupteur', 'action');
+
+            game.channels[channel] = false;
+        }
     },
 
    /**
