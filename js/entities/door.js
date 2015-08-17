@@ -17,7 +17,7 @@ game.DoorEntity = me.Entity.extend({
         this.name = 'door';
         this.closed = true;
         this.channel = settings.channel;
-        this.anchor = this.pos;
+        this.anchor = this.pos.clone();
         this.closingTimeout = null;
 
         // set channel
@@ -41,23 +41,8 @@ game.DoorEntity = me.Entity.extend({
         this.channel = settings.channel;
 
         // we set the velocity of the player's body
-        this.body.setVelocity(0, 0);
-        this.body.setMaxVelocity(0, 0);
+        this.body.setVelocity(1, 1);
         this.body.gravity = 0;
-
-        // we always update the piglets, ALWAYS
-        this.alwaysUpdate = true;
-    },
-
-    setCurrentAnimation: function(name, onComplete) {
-        if (!this.renderable.isCurrentAnimation(name)) {
-            this.renderable.setCurrentAnimation(name, onComplete);
-        }
-    },
-
-    break: function() {
-        //break the block
-        me.game.world.removeChild(this);
     },
 
     /**
@@ -73,43 +58,66 @@ game.DoorEntity = me.Entity.extend({
         // handle opening
         var isChannelOn = game.channels[this.channel];
         if (isChannelOn) {
-            this.open();
+            if (!this.isFullyOpened()) {
+                this.open();
+            } else {
+                this.body.vel.set(0, 0);
+            }
         } else {
-            this.close();
+            if (!this.isFullyClosed()) {
+                //this.body.vel.y += this.body.accel.y * me.timer.tick;
+            } else {
+                this.pos.set(this.anchor.x, this.anchor.y);
+                this.body.vel.y = 0;
+            }
         }
 
         // return true if we moved or if the renderable was updated
         return (this._super(me.Entity, 'update', [dt]));
     },
 
-    open: function() {
-        this.pos = this.anchor.clone();
+    isFullyOpened: function() {
         if (this.facing === 'up') {
-            this.pos.y -= 48;
+            return this.pos.y <= this.anchor.y - 48;
         } else if (this.facing === 'right') {
-            this.pos.x += 48;
+            return this.pos.x >= this.anchor.x + 48;
         } else if (this.facing === 'down') {
-            this.pos.y += 48;
+            return this.pos.y >= this.anchor.y + 48;
         } else if (this.facing === 'left') {
-            this.pos.x -= 48;
+            return this.pos.x <= this.anchor.x - 48;
         }
-        this.closed = false;
+    },
 
-        //set timeout to close the door
+    isFullyClosed: function() {
+        if (this.facing === 'up') {
+            return this.pos.y >= this.anchor.y;
+        } else if (this.facing === 'right') {
+            return this.pos.x <= this.anchor.x;
+        } else if (this.facing === 'down') {
+            return this.pos.y <= this.anchor.y;
+        } else if (this.facing === 'left') {
+            return this.pos.x >= this.anchor.x;
+        }
+    },
+
+    open: function() {
+        if (this.facing === 'up') {
+            this.body.vel.y -= this.body.accel.y * me.timer.tick;
+        } else if (this.facing === 'right') {
+            this.body.vel.x += this.body.accel.x * me.timer.tick;
+        } else if (this.facing === 'down') {
+            this.body.vel.y += this.body.accel.y * me.timer.tick;
+        } else if (this.facing === 'left') {
+            this.body.vel.x -= this.body.accel.x * me.timer.tick;
+        }
+
+        // set timeout to close the door
         if (this.closingTimeout == null) {
             this.closingTimeout = me.timer.setTimeout((function() {
                 this.deactivateChannel(this.channel);
-                this.close();
                 this.closingTimeout = null;
             }).bind(this), this.beforeCloseTime);
         }
-
-    },
-
-    close: function() {
-        this.pos = this.anchor.clone();
-        this.closed = true;
-
     },
 
     deactivateChannel: function(channel) {

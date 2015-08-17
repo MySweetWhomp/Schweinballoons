@@ -19,9 +19,6 @@ game.PigletEntity = me.Entity.extend({
         // we set the velocity of the player's body
         this.body.setVelocity(0, 0);
 
-        // we always update the piglets, ALWAYS
-        this.alwaysUpdate = true;
-
         // we set initial values
         this.rescued = false;
 
