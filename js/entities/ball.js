@@ -14,8 +14,8 @@ game.BallEntity = me.Entity.extend({
         this.name = 'ball';
 
         // define movement constants
-        this.NORMAL_SPEED  = 2.5;
-        this.ACCELERATED_SPEED = 6;
+        this.NORMAL_SPEED  = 2;
+        this.ACCELERATED_SPEED = 4;
         this.DECCELERATION_STEPS = 3;
 
         // the ball must not react to gravity
