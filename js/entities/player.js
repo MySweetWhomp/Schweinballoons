@@ -22,8 +22,8 @@ game.PlayerEntity = me.Entity.extend({
                               .add(new me.Vector2d(this.width / 2,
                                                    this.height / 2));
         this.SCROLL_OFFSET_MAX = 30;
-        this.SCROLL_OFFSET_SPEED = 4;
-        this.SCROLL_DEADZONE_MAX = 10;
+        this.SCROLL_OFFSET_SPEED = 1;
+        this.SCROLL_DEADZONE_MAX = 8;
         this.scrollOffset = 0;
         this.scrollDeadzone = 0;
         me.game.viewport.setDeadzone(0, 0);
