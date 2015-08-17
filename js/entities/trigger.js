@@ -31,6 +31,9 @@ game.TriggerEntity = me.Entity.extend({
         // set the channel
         this.channel = settings.channel;
 
+        this.closingTimeout = null;
+        this.beforeClose = settings.beforeClose || 3000;
+
         // we set the velocity of the player's body
         this.body.setVelocity(0, 0);
         this.body.setMaxVelocity(0, 0);
@@ -73,7 +76,21 @@ game.TriggerEntity = me.Entity.extend({
     },
 
     activateChannel: function(channel) {
-        game.channels[channel] = true;
+        if (!game.channels[channel]) {
+            game.channels[channel] = true;
+
+            // set timeout to close the doors
+            if (this.closingTimeout == null) {
+                this.closingTimeout = me.timer.setTimeout((function() {
+                    this.deactivateChannel(this.channel);
+                    this.closingTimeout = null;
+                }).bind(this), this.beforeClose);
+            }
+        }
+    },
+
+    deactivateChannel: function(channel) {
+        game.channels[channel] = false;
     },
 
    /**

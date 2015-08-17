@@ -18,7 +18,6 @@ game.DoorEntity = me.Entity.extend({
         this.closed = true;
         this.channel = settings.channel;
         this.anchor = this.pos.clone();
-        this.closingTimeout = null;
 
         // set channel
         game.channels[this.channel] = false;
@@ -34,8 +33,6 @@ game.DoorEntity = me.Entity.extend({
         } else {
             this.renderable.angle = 0;
         }
-
-        this.beforeCloseTime = settings.close || 3000;
 
         // set the channel
         this.channel = settings.channel;
@@ -65,6 +62,7 @@ game.DoorEntity = me.Entity.extend({
             }
         } else {
             if (!this.isFullyClosed()) {
+                this.close();
                 //this.body.vel.y += this.body.accel.y * me.timer.tick;
             } else {
                 this.pos.set(this.anchor.x, this.anchor.y);
@@ -110,18 +108,18 @@ game.DoorEntity = me.Entity.extend({
         } else if (this.facing === 'left') {
             this.body.vel.x -= this.body.accel.x * me.timer.tick;
         }
-
-        // set timeout to close the door
-        if (this.closingTimeout == null) {
-            this.closingTimeout = me.timer.setTimeout((function() {
-                this.deactivateChannel(this.channel);
-                this.closingTimeout = null;
-            }).bind(this), this.beforeCloseTime);
-        }
     },
 
-    deactivateChannel: function(channel) {
-        game.channels[channel] = false;
+    close: function() {
+        if (this.facing === 'up') {
+            this.body.vel.y += this.body.accel.y * me.timer.tick;
+        } else if (this.facing === 'right') {
+            this.body.vel.x -= this.body.accel.x * me.timer.tick;
+        } else if (this.facing === 'down') {
+            this.body.vel.y -= this.body.accel.y * me.timer.tick;
+        } else if (this.facing === 'left') {
+            this.body.vel.x += this.body.accel.x * me.timer.tick;
+        }
     },
 
    /**
