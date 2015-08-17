@@ -25,7 +25,7 @@ game.PlayerEntity = me.Entity.extend({
         this.SCROLL_OFFSET_SPEED = 1;
         this.SCROLL_OFFSET_INERTIAL_SPEED = 2;
         this.SCROLL_DEADZONE_MAX = 8;
-        this.SCROLL_DEADZONE_INERTIAL_MAX = 20;
+        this.SCROLL_DEADZONE_INERTIAL_MAX = 10;
         this.scrollOffset = 0;
         this.scrollDeadzone = 0;
         this.scrollInertialDeadzone = 0;
@@ -161,7 +161,6 @@ game.PlayerEntity = me.Entity.extend({
                             this.scrollInertialDeadzone = 0;
                         }
                     }
-                    console.log(this.scrollInertialDeadzone);
                 }
             }
 
