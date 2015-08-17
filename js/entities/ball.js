@@ -49,7 +49,7 @@ game.BallEntity = me.Entity.extend({
         this.carried = false;
 
         this.offScreenSince = 0;
-        this.MAX_TIME_OFFSCREEN = 3000;
+        this.MAX_TIME_OFFSCREEN = 1200;
     },
 
     setCurrentAnimation: function(name, onComplete) {
