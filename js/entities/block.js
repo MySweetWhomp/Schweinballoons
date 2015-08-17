@@ -32,6 +32,7 @@ game.BlockEntity = me.Entity.extend({
     break: function() {
         //break the block
         if (!this.renderable.isCurrentAnimation('break')) {
+            me.audio.playUnique('blockdestroy', 'action');
             this.renderable.setCurrentAnimation('break', function() {
                 me.game.world.removeChild(this);
             }.bind(this));
