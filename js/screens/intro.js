@@ -7,6 +7,13 @@
             this.backgroundColor = backgroundColor;
 
             this.addChild(new me.ColorLayer('background', backgroundColor, 1));
+            this.imageBackground = new me.ImageLayer(0, 0, {
+                image : 'intro-' + index + '-bg',
+                width : me.game.viewport.width,
+                height : me.game.viewport.height,
+                z : 2
+            });
+            this.addChild(this.imageBackground);
             this.addChild(new me.ImageLayer(0, 0, {
                 image : 'intro-' + index + '-frame-bg',
                 z : 5
