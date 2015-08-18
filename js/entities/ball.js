@@ -18,6 +18,9 @@ game.BallEntity = me.Entity.extend({
         this.ACCELERATED_SPEED = 4;
         this.DECCELERATION_STEPS = 3;
 
+        // hide the ball in the tutorial
+        this.discovered = false;
+
         // the ball must not react to gravity
         this.poweredUp = false;
         this.powerLevel = 0;
@@ -146,8 +149,14 @@ game.BallEntity = me.Entity.extend({
             this.offScreenSince = 0;
         }
         if (this.offScreenSince >= this.MAX_TIME_OFFSCREEN) {
-            this.respawn();
+            // if the ball has been discovered or we're not in lvl 1
+            if (this.discovered || game.data.currentLevel != 1) {
+                this.respawn();
+            }
         }
+
+        // set true if the ball has been seen one time
+        this.discovered = me.game.viewport.isVisible(this) || this.discovered;
 
         return (this._super(me.Entity, 'update', [dt]) ||
                 this.body.vel.x !== 0 ||
