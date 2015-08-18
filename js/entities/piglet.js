@@ -57,7 +57,7 @@ game.PigletEntity = me.Entity.extend({
         this.body.update(dt);
 
         if (me.game.viewport.isVisible(this) && !this.rescued) {
-            me.audio.playUnique('jump', 'action');
+            me.audio.playUnique('oscours', 'action');
         }
 
         // handle collisions against other shapes
