@@ -28,6 +28,9 @@ game.PigletEntity = me.Entity.extend({
         this.renderable.addAnimation('freed', [4, 5, 6, 7], 100);
         this.renderable.addAnimation('happy', [8, 9, 10, 11, 100]);
         this.setCurrentAnimation('kidnapped');
+
+        this.TIME_BETWEEN_SCREAMS = 1500;
+        this.since_last_scream = this.TIME_BETWEEN_SCREAMS;
     },
 
     setCurrentAnimation: function(name, onComplete) {
@@ -57,7 +60,11 @@ game.PigletEntity = me.Entity.extend({
         this.body.update(dt);
 
         if (me.game.viewport.isVisible(this) && !this.rescued) {
-            me.audio.playUnique('oscours', 'action');
+            this.since_last_scream += dt;
+            if (this.since_last_scream >= this.TIME_BETWEEN_SCREAMS) {
+                me.audio.playUnique('oscours', 'action');
+                this.since_last_scream = 0;
+            }
         }
 
         // handle collisions against other shapes
