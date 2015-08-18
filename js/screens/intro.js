@@ -7,13 +7,20 @@
             this.backgroundColor = backgroundColor;
 
             this.addChild(new me.ColorLayer('background', backgroundColor, 1));
-            this.imageBackground = new me.ImageLayer(0, 0, {
-                image : 'intro-' + index + '-bg',
-                width : me.game.viewport.width,
-                height : me.game.viewport.height,
-                z : 2
-            });
-            this.addChild(this.imageBackground);
+            this.background = new me.ImageLayer(
+                0,
+                -(me.game.viewport.height * 2),
+                {
+                    image : 'intro-' + index + '-bg',
+                    width : me.game.viewport.width,
+                    height : me.game.viewport.height,
+                    z : 2
+                }
+            );
+            this.background._width = me.game.viewport.width * 3;
+            this.background._height = me.game.viewport.height * 3;
+            this.addChild(this.background);
+
             this.addChild(new me.ImageLayer(0, 0, {
                 image : 'intro-' + index + '-frame-bg',
                 z : 5
@@ -30,7 +37,10 @@
         },
 
         update: function(dt) {
-            var ret = this._super(me.Container, 'update', [dt]);
+            this.background.pos.x -= 1;
+            this.background.pos.y += 1;
+
+            this._super(me.Container, 'update', [dt]);
 
             this.sinceScreenStart += dt;
             if (me.input.isKeyPressed('kick') ||
@@ -44,7 +54,7 @@
                     }
                 }
 
-            return ret;
+            return true;
         }
     });
 
