@@ -21,6 +21,12 @@ game.PlayScreen = me.ScreenObject.extend({
         me.state.transition('fade', 'rgb(215, 232, 148)', 350);
 
         this.won = false;
+
+        me.timer.setTimeout(function() {
+            if (me.game.viewport._fadeIn.color != null) {
+                me.game.viewport.fadeIn('rgba(215, 232, 148)', 1);
+            }
+        }, 1000);
     },
 
     /**
