@@ -37,8 +37,8 @@
         },
 
         update: function(dt) {
-            this.background.pos.x -= 1;
-            this.background.pos.y += 1;
+            this.background.pos.x -= 0.5;
+            this.background.pos.y += 0.5;
 
             this._super(me.Container, 'update', [dt]);
 
