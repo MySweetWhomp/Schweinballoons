@@ -104,6 +104,9 @@ var game = {
         me.input.bindKey(me.input.KEY.C, 'jump', true);
         me.input.bindKey(me.input.KEY.X, 'kick', true);
         me.input.bindKey(me.input.KEY.ESC, 'pause', true);
+        // only for title screen
+        me.input.bindKey(me.input.KEY.SPACE, 'start', true);
+        me.input.bindKey(me.input.KEY.ENTER, 'start', true);
 
         // sets global gravity
         me.sys.gravity = 0.7;

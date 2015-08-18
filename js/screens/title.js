@@ -28,7 +28,8 @@
 
             if (me.input.isKeyPressed('kick') ||
                 me.input.isKeyPressed('jump') ||
-                me.input.isKeyPressed('pause')) {
+                me.input.isKeyPressed('pause') ||
+                me.input.isKeyPressed('start')) {
                     ret = true;
                     me.audio.playUnique('startpause', 'action');
                     me.state.change(me.state.PLAY);

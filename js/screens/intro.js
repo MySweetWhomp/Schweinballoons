@@ -46,6 +46,7 @@
             if (me.input.isKeyPressed('kick') ||
                 me.input.isKeyPressed('jump') ||
                 me.input.isKeyPressed('pause') ||
+                me.input.isKeyPressed('start') ||
                 this.sinceScreenStart >= this.MAX_SCREEN_TIME) {
                     if (!this.ended) {
                         me.state.current().nextScreen(this.backgroundColor);
