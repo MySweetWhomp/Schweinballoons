@@ -4,7 +4,7 @@ This repository contains  [Schweinballon](http://gamejolt.com/games/schweinballo
 
 Follow a pig dad in his journey to free his sons who've been kidnapped by evil boars.  
 
-Source code is released under [MIT license](https://github.com/Paulloz/gbjam/blob/master/LICENSE).  
+Source code is released under [MIT license](https://github.com/mysweetwhomp/gbjam4/blob/master/LICENSE).  
 Assets (audio and graphics) are released under [CC BY-NC-SA 4.0 ![](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 ---
@@ -13,5 +13,5 @@ Ce dépôt contient [Schweinballon](http://gamejolt.com/games/schweinballon/8687
 
 Suivez un papa cochon dans son périple pour délivrer ses enfants kidnappés par d'horribles sangliers.
 
-Le code source est distribué sous [licence MIT](https://github.com/Paulloz/gbjam/blob/master/LICENSE).  
+Le code source est distribué sous [licence MIT](https://github.com/mysweetwhomp/gbjam4/blob/master/LICENSE).  
 Les ressources audio et graphiques sont distribués sous les conditions de la licence [CC BY-NC-SA 4.0 ![](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/).
