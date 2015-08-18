@@ -293,7 +293,7 @@ game.BallEntity = me.Entity.extend({
                             this.bounceDirection();
                         } else if (!other.powerJumping && other.body.vel.y > 0) {
                             // we jump
-                            other.body.vel.set(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -8);
+                            other.body.vel.set(-8 * 10 * (other.pos.x - this.pos.x) > 0 ? 1 : -1, -12);
                             other.powerJumping = true;
                             // we accelerate the ball downwards
                             this.accelerateDown();
