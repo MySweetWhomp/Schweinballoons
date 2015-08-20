@@ -20,7 +20,7 @@ var game = {
         }
 
         // Initialize the audio.
-        me.audio.init('ogg');
+        me.audio.init('mp3,ogg');
 
         // setting up sound
         me.audio.samplePlaying = null;
